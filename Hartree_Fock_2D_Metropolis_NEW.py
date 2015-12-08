@@ -157,11 +157,11 @@ def Delta_Fock_w_s_i_Metropolis(n_x,n_y):
             Y[1]=X[i][1]+1      
             
             
-        #Choix d'un nouveau vecteur r (première variable d'intégration) : uiformément choisi dans un petit cube autour du vecteur r précédent
+        #Choix d'un nouveau vecteur r (première variable d'intégration)
         Y[2]=random.uniform(X[i][2]-(d1/a),X[i][2]+(d1/a))
         Y[3]=random.uniform(X[i][3]-(d1/a),X[i][3]+(d1/a))
         Y[4]=random.uniform(X[i][4]-(d1/a),X[i][4]+(d1/a))
-        #Choix d'un nouveau vecteur r' (deuxième variable d'intégration) : uniformément choisi dans un petit cube autour du vecteur r précédent
+        #Choix d'un nouveau vecteur r' (deuxième variable d'intégration) 
         Y[5]=random.uniform(X[i][5]-(d1/a),X[i][5]+(d1/a))
         Y[6]=random.uniform(X[i][6]-(d1/a),X[i][6]+(d1/a))
         Y[7]=random.uniform(X[i][7]-(d1/a),X[i][7]+(d1/a))
