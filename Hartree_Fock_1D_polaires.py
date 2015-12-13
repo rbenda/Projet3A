@@ -65,7 +65,7 @@ def F(m,r1,r2,theta1,theta2,phi1,phi2):
 #le tirage de r1 et r2 selon des gaussiennes    
 #Premier facteur : facteur de renormalisation de la densité de la gaussienne
     
-nb=10000.
+nb=100000.
 
 r1_0=0.
 r2_0=0.
@@ -80,7 +80,7 @@ def I_1D(m):
     Y=[0 for m in range(6)]    
     res=0
     Y=[r1_0,r2_0,theta1_0,theta2_0,phi1_0,phi2_0]
-    for i in range(9999):
+    for i in range(99999):
         #Tirage d'un (i+1)ème uplet de variables aléatoires
     
         
@@ -123,10 +123,10 @@ def Delta_Hartree_Fock(n):
         #Le calcul de I_1D(m) nécessite à chaque m nb tirages...
         
     abscisses_m=[i for i in range(N)]
-    #plot(abscisses_m,tab_I_1D)
+    plot(abscisses_m,tab_I_1D)
     return (e2/N)*res2
     
-#print(Delta_Hartree_Fock(0))
+print(Delta_Hartree_Fock(2))
 
 
 nb_tirages=10000.
@@ -172,7 +172,7 @@ def Delta_Hartree_Fock_bis(n):
 #print(Delta_Hartree_Fock_bis(0))
 
 
- 
+"""
 correction_energie=[0 for i in range(N)]
    
 for n in range(N):
@@ -186,3 +186,4 @@ xlabel("k")
 ylabel("Delta_HF(k)")
 
 numpy.savetxt('Correction_energie_1D_polaires_N=50_nb=50000_NB=50_essai1_13_12.txt',tab,newline='\n')
+"""
