@@ -10,6 +10,8 @@ Created on Mon Dec 07 22:44:44 2015
 Ce code permet de calculer directement la correction à l'énergie d'un niveau électronique donné (pour un réseau 1D),
 grâce à un algorithme de Metropolis. La chaîne de Markov construite est dans l'espace des (m,r,r').
 L'invariance par translation l/m a été prise en compte.
+
+Différence par rapport à Hartree_Fock_1D_Metropolis_NEW :
 On a modifié le taux de transition de x vers y pour qu'il soit à chaque fois une fraction visible alpha de 1.
 Ainsi les "y" tirés sont acceptés en moyenne 100*alpha fois sur 100.
 Ici alpha est pris de l'ordre de 0.6.
@@ -17,6 +19,8 @@ ATTENTION : la technique utilisée ne marche QUE POUR DES GAUSSIENNES comme orbi
 Tout est donc fait ici pour que la chaîne de Markov évolue et ne se retrouve pas bloquée
 au voisinage du maximum (si rho(x_n) est trop grand, rho(y)/rho(x_n) est petit donc le nombre
 tiré uniformément sur [0,1] a très peu de chances d'être inférieur à A(x_n -> y) = h(rho(y)/rho(x_n))=rho(y)/rho(x_n) (<<1) dans ce cas.
+
+LE code permet une estimation de l'écart-type des tirages de la correction à l'énergie calculés.
 """
 
 get_ipython().magic(u'pylab inline')
@@ -31,7 +35,7 @@ import time
 #Estimation de la correction à l'énergie dûe au terme de Hartree-Fock pour des orbitales atomiques gaussiennes
 
 e2=2.3*math.pow(10,-28) 
-N=50
+N=20
 E0=13
 t0=0.5
 t=2
@@ -77,7 +81,7 @@ def distance_reseau_1D(x,y,z,x1,y1,z1):
 
 
 k=numpy.linspace(-pi/a,pi/a,N)
-print(k)
+#print(k)
 #k[O] sera donc égal à -pi/a et k[N/2] à  0. On peut translater les indices
 
 def terme_facteur_phase(n,m):
@@ -91,7 +95,7 @@ def terme_facteur_phase(n,m):
     return N+res
 
     
-print(terme_facteur_phase(0,1))
+#print(terme_facteur_phase(0,1))
 
   
 #Fonction densité voulue, avec gaussiennes centrées
@@ -212,7 +216,7 @@ n=5
 #Estimation de l'écart type pour un nombre de tirages donné
     
 #Nombre de calculs de la correction (=nb de fois que l'on a simulé une chaîne de Markov)
-p=100.
+p=10.
 
 #Estimateur de la moyenne
 mu=0.
@@ -229,7 +233,7 @@ sum2=0.
 #Estimateur de l'écart type
 sigma=0.
 
-for i in range(100):
+for i in range(10):
 
     tps1=time.clock()
     var =Delta_Fock_w_s_i_Metropolis(n)
@@ -245,7 +249,7 @@ print("Ecart-type : {0}  Moyenne : {1}".format(sigma,mu))
 print("Pourcentage : {0} %".format(sigma/mu))
 
 
-"""
+
 tab=[0 for i in range(N)]
 for m in range(N):
     tps3=time.clock()
@@ -258,7 +262,7 @@ numpy.savetxt('Correction_energie_1D_N=20_nb=1000000_essai1_07_12.txt',tab,newli
 plot(k,tab)
 xlabel("k")
 ylabel("Delta_HF(k)")
-"""
+
 
 #energie_corrigee=[(E0-t0-2*t*cos(-pi/a+m*(2*pi/(N*a)))+tab[i]) for i in range(N)]
 #plot(k,energie_corrigee)

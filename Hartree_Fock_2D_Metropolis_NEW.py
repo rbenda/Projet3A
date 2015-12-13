@@ -14,7 +14,7 @@ L'invariance par translation dans la somme a donc été prise en compte.
 """
 
 
-import numpy 
+import numpy
 import scipy
 from scipy.integrate import quad, dblquad, tplquad
 import math
@@ -24,7 +24,7 @@ import random
 from mpl_toolkits.mplot3d import Axes3D
 import matplotlib.pyplot as plt
 
-
+ 
 #Estimation de la correction à l'énergie dûe au terme de Hartree-Fock pour des orbitales atomiques gaussiennes
 
 e2=2.3*math.pow(10,-28) 

@@ -70,7 +70,7 @@ def distance_reseau_1D(x,y,z,x1,y1,z1):
 
 
 k=numpy.linspace(-pi/a,pi/a,N)
-print(k)
+#☻print(k)
 #k[O] sera donc égal à -pi/a et k[N/2] à  0. On peut translater les indices
 
 def terme_facteur_phase(n,m):
@@ -190,14 +190,43 @@ def Delta_Fock_w_s_i_Metropolis(n):
 #Cette correction est à multiplier par e2*a**5
     
     
-
+    
 n=5
-tps1=time.clock()
-var =Delta_Fock_w_s_i_Metropolis(n)
-tps2=time.clock()
  
+#Estimation de l'écart type pour un nombre de tirages donné
+    
+#Nombre de calculs de la correction (=nb de fois que l'on a simulé une chaîne de Markov)
+p=10.
 
-print("Delta_Fock_w_s_i_({0}) : {1}  Temps calcul : {2} ".format(n,var,tps2-tps1))   
+#Estimateur de la moyenne
+mu=0.
+
+#Somme des réalisations
+sum=0.
+
+#Estimteur de la moyenne du carré
+m=0.
+
+#Somme des carrés des réalisations
+sum2=0.
+
+#Estimateur de l'écart type
+sigma=0.
+
+for i in range(10):
+
+    tps1=time.clock()
+    var =Delta_Fock_w_s_i_Metropolis(n)
+    tps2=time.clock()
+    sum +=var
+    sum2+=var**2
+    print("Delta_Fock_w_s_i_({0}) : {1}  Temps calcul : {2} ".format(n,var,tps2-tps1))   
+
+mu=sum/p
+m=sum2/p
+sigma=sqrt(m-mu**2)
+print("Ecart-type : {0}  Moyenne : {1}".format(sigma,mu))
+print("Pourcentage : {0} %".format(sigma/mu))
 
 
 
