@@ -24,7 +24,7 @@ import time
 #Estimation de la correction à l'énergie dûe au terme de Hartree-Fock pour des orbitales atomiques gaussiennes
 
 e2=2.3*math.pow(10,-28) 
-N=20
+N=50
 E0=13
 t0=0.5
 t=2
@@ -69,17 +69,20 @@ def distance_reseau_1D(x,y,z,x1,y1,z1):
     return min(var,sqrt((x-x1)**2+(y-y1)**2+(z-z1)**2)) 
 
 
-k=numpy.linspace(-pi/a,pi/a,N)
-#☻print(k)
-#k[O] sera donc égal à -pi/a et k[N/2] à  0. On peut translater les indices
+k=[(-(2*pi/(N*a))*floor(N/2.)+i*(2*pi/(N*a))) for i in range(0,N)]
+#print(k)
+
+
+NB=20
+#Remplissage en électrons
 
 def terme_facteur_phase(n,m):
     res=0
-    for j in range(N):
+    for j in range(NB/2):
         if (j!=n):
             #rajouter la condition : j est un état occupé de même spin ? Faire une fonction qui dit si l'état est occupé ou non ?
             #print(cos((k[n]-k[j])*(m-l)*a))
-            res+= -cos((k[n]-k[j])*(m-l)*a)
+            res+= -cos((k[n]-k[(N-NB/2)/2+j])*(m-l)*a)
     #Cas où tous les états sont occupés (cas général : N_occ - Delta(k_n,occ))
     return N+res
 
@@ -111,7 +114,7 @@ def T(n,X,Y):
     return 0
 
 #Taille caractéristique de la boule où l'on tire r_(n+1) à partir de r_n
-d1=0.001*a
+d1=0.1*a
 #Plus d1 est grand, plus la zone explorée est grande dans un laps de temps donné
 
 
@@ -129,11 +132,12 @@ y_2=0.
 
 #Nombre de tirages aléatoires dans la marche aléatoire
 #Pas vraiment contrôlé ? 
-nb=10000.
+nb=100000.
+seuil=50000
 
 #1000000 : insuffisant pour le calcul d'une correction.
 
-X=[[0 for m in range(7)] for i in range(10000)]
+X=[[0 for m in range(7)] for i in range(100000)]
 #Valeurs de la chaîne de Markov
 
 
@@ -143,7 +147,7 @@ def Delta_Fock_w_s_i_Metropolis(n):
     #print(X[0])
     res+= F(n,X[0][0],X[0][1],X[0][2],X[0][3],X[0][4],X[0][5],X[0][6])
     print(res)
-    for i in range(9999):
+    for i in range(99999):
         #Tirage d'un (i+1)ème uplet de variables aléatoires (l,m,r,r')
     
         #On choisit Y selon la loi T(X_i,y)
@@ -184,9 +188,10 @@ def Delta_Fock_w_s_i_Metropolis(n):
         #X[i+1]=[l_(i+1),m_(i+1),r_(i+1),r'_(i+1)]
         #print(X[i+1])
         #print(terme_facteur_phase(n,X[i+1][0]))
-        res+= F(n,X[i+1][0],X[i+1][1],X[i+1][2],X[i+1][3],X[i+1][4],X[i+1][5],X[i+1][6])
+        if (i>=seuil):
+            res+= F(n,X[i+1][0],X[i+1][1],X[i+1][2],X[i+1][3],X[i+1][4],X[i+1][5],X[i+1][6])
         #print(res)
-    return (res/nb)
+    return (res/49999.)
 #Cette correction est à multiplier par e2*a**5
     
     
@@ -226,10 +231,10 @@ mu=sum/p
 m=sum2/p
 sigma=sqrt(m-mu**2)
 print("Ecart-type : {0}  Moyenne : {1}".format(sigma,mu))
-print("Pourcentage : {0} %".format(sigma/mu))
+print("Pourcentage : {0} %".format(100*sigma/mu))
 
 
-
+"""
 tab=[0 for i in range(N)]
 for m in range(N):
     tps3=time.clock()
@@ -238,11 +243,11 @@ for m in range(N):
     print("Delta_Fock_w_s_i_(k[{0}]={1}) : {2} Temps calcul : {3}".format(m,k[m],tab[m],tps4-tps3))
 
 
-numpy.savetxt('Correction_energie_1D_N=20_nb=1000000_essai1_07_12.txt',tab,newline='\n')
+numpy.savetxt('Correction_energie_1D_N=50_nb=10000_essai1_19_12.txt',tab,newline='\n')
 plot(k,tab)
 xlabel("k")
 ylabel("Delta_HF(k)")
-
+"""
 
 #energie_corrigee=[(E0-t0-2*t*cos(-pi/a+m*(2*pi/(N*a)))+tab[i]) for i in range(N)]
 #plot(k,energie_corrigee)

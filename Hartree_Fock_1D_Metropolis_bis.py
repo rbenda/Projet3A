@@ -23,6 +23,7 @@ Created on Fri Nov 20 10:19:55 2015
 """
 Ce code permet de calculer chaque intégrale I_1D(m) (et chaque facteur de phase Delta(m)), intervenant dans la correction de l'énergie pour un réseau 1D,
 grâce à un algorithme de Metropolis : la chaîne de Markov construite à (m) fixé est dans l'espace des (r,r') à 6 dimensions
+
 Permet de tracer le graphe des I_1D(m)*Delta(n,m) à n fixé, pour tous les m=1..N. (N chaînes de MArkov construites)
 On retrouve ainsi la décroissance en 1/m à partir du site 0.
 """
@@ -38,10 +39,10 @@ import random
 #Estimation de la correction à l'énergie dûe au terme de Hartree-Fock pour des orbitales atomiques gaussiennes
 
 e2=2.3*math.pow(10,-28) 
-N=100
+N=50
 E0=13
 a=math.pow(10,-10)
-d=a/5.
+d=a/4.
 l=0
 
 #Forme de la partie radiale de lorbitale atomique commune à tous les sites
@@ -81,26 +82,23 @@ def distance_reseau_1D(x,y,z,x1,y1,z1):
 
 
 
-d1=0.1*a
-
 NB=100
-#Demi-remplissage
+#Remplissage en électrons
 
-k=numpy.linspace(-pi/a,pi/a,N)
-#k[O] sera donc égal à -pi/a et k[N/2] à  0. On peut translater les indices
+k=[(-(2*pi/(N*a))*floor(N/2.)+i*(2*pi/(N*a))) for i in range(0,N)]
+
 
 def terme_facteur_phase(n,m):
     res=0
-    for j in range(N/2):
+    for j in range(NB/2):
         if (j!=n):
             #rajouter la condition : j est un état occupé de même spin ? Faire une fonction qui dit si l'état est occupé ou non ?
             #print(cos((k[n]-k[j])*(m-l)*a))
-            res+= -cos((k[n]-k[N/4+j])*(m-l)*a)
+            res+= -cos((k[n]-k[(N-NB/2)/2+j])*(m-l)*a)
     #Cas où tous les états sont occupés
     return NB+res
 
     
-
 
 
 
@@ -144,6 +142,7 @@ def T(n,X,Y):
 #Pas vraiment contrôlé ? 
 nb=10000.
 
+d1=0.1*a
 
 X=[[0 for m in range(6)] for i in range(10000)]
 #Valeurs de la chaîne de Markov
@@ -176,14 +175,18 @@ def I_1D_Metropolis(m):
             X[i+1]=X[i]
         #X[i+1]=[r_(i+1),r'_(i+1)]
         #print(X[i+1])
-        res+= F(m,X[i+1][0],X[i+1][1],X[i+1][2],X[i+1][3],X[i+1][4],X[i+1][5])
+        if (i>=5000):
+            #On ne fait la moyenne des termes le long de la chaîne de Markov qu'une fois 
+            #la "thermalisation" effectuée, i.e. que la mesure stationnaire est presque atteinte.
+            res+= F(m,X[i+1][0],X[i+1][1],X[i+1][2],X[i+1][3],X[i+1][4],X[i+1][5])
    
-    return (res/nb)
+    return (res/4999.)
     
     
-#Ce qui compte :X[nb]=(r_nb,r'_nb) : où en est arrivé la chaîne de Markov après nb étapes.
-    
-n=N/2
+#Ce qui compte :X[nb]=(r_nb,r'_nb) : où en est arrivé la chaîne de Markov après suffisamment d'étapes.
+ 
+  
+n=0
 tab=[0 for i in range(N)]
 for m_1 in range(N):
     tab[m_1]=I_1D_Metropolis(m_1)*terme_facteur_phase(n,m_1)
@@ -194,6 +197,7 @@ for m_1 in range(N):
 M=[i for i in range(N)]
 plot(M,tab)
 
+
 """
 def Delta_Fock_w_s_i(n):   
     res=0
@@ -201,15 +205,15 @@ def Delta_Fock_w_s_i(n):
         for m_1 in range (0,N,1):
             #print("terme_facteur_phase{1} {2} :{0}".format(terme_facteur_phase(n,l_1,m_1),l_1,m_1))
             #print("I_1D_MonteCarlo:{0}".format(I_1D_MonteCarlo[l_1][m_1]))
-            res+= I_1D_Metropolis(l_1,m_1)*terme_facteur_phase(n,l_1,m_1)
+            res+= I_1D_Metropolis(m_1)*terme_facteur_phase(n,m_1)
             #-(e2/N**2)*terme_facteur_phase(n,l_1,m_1)
     return res
 
 
 
 for m in range(N):
-    print("Delta_Fock_w_s_i_(k[{0}]={1}) : {2} ".format(m,-pi/a+m*(2*pi/(N*a)),Delta_Fock_w_s_i(m)))
-  
+    print("Delta_Fock_w_s_i_(k[{0}]={1}) : {2} ".format(m,k[m],Delta_Fock_w_s_i(m)))
 """
+
 #save txt numpy : argument array numpy
 #lire : load txt

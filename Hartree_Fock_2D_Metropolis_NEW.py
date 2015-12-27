@@ -62,9 +62,9 @@ def distance_reseau_2D(x,y,z,x1,y1,z1):
     return min(var1,var2,var3,sqrt((x-x1)**2+(y-y1)**2+(z-z1)**2)) 
 
 
-k_x=numpy.linspace(-pi/a,pi/a,N)
-#k_x[O] sera donc égal à -pi/a et k_x[N/2] à  0. On peut translater les indices
-k_y=numpy.linspace(-pi/a,pi/a,N)
+k_x=[(-(2*pi/(N*a))*floor(N/2.)+i*(2*pi/(N*a))) for i in range(0,N)]
+
+k_y=[(-(2*pi/(N*a))*floor(N/2.)+i*(2*pi/(N*a))) for i in range(0,N)]
 
 def terme_facteur_phase(n_x,n_y,l2,p2):
     res=0
@@ -187,9 +187,9 @@ tab=[[0 for i in range(N)] for j in range(N)]
 for m in range(N):
     for q in range(N):
         tab[m][q]=Delta_Fock_w_s_i_Metropolis(m,q)
-        print("Delta_Fock_w_s_i_(k_x[{0}]={1},k_y[{2}]={3}) : {4} ".format(m,-pi/a+m*(2*pi/(N*a)),q,-pi/a+q*(2*pi/(N*a)),tab[m][q]))
+        print("Delta_Fock_w_s_i_(k_x[{0}]={1},k_y[{2}]={3}) : {4} ".format(m,k_x[m],q,k_y[q],tab[m][q]))
 
-numpy.savetxt('Correction_energie_2D_bis.txt',tab,newline='\n')
+#numpy.savetxt('Correction_energie_2D_bis.txt',tab,newline='\n')
 
 
 #Graphe en 3D de la correction de l'énergie par le terme de Hartree Fock

@@ -5,6 +5,14 @@ Created on Sat Dec 12 18:25:55 2015
 @author: Robert
 """
 
+"""
+Ce code permet de calculer la correction à l'énergie d'un niveau électronique donné (pour un réseau 1D),
+en écrivant les intégrales I_1D(m) en coordonnées sphériques et en tirant les variables radiales
+selon des lois gaussiennes et les variables angulaires uniformément.
+L'invariance par translation dans la somme a été prise en compte.
+"""
+
+
 get_ipython().magic(u'pylab inline')
 import numpy 
 import scipy
@@ -15,28 +23,30 @@ import time
 
 
 e2=2.3*math.pow(10,-28) 
-N=50
+N=500
 E0=13
+t0=0.5
+t=2
 a=math.pow(10,-10)
 
 #d : inférieur ou égal à a/4. pour une gaussienne (ainsi 1 % de recouvrement des gaussiennes
 # de 2 orbitales atomiques localisée voisines en a/2)
 d=a/4.
 
+#TESTER d'AUTRES VALEURS DE d et voir comment varie l'ordre de grandeur de la correction de Fock
 
 
-#Cette fonction sert en coordonnées cartésiennes uniquement
 #Distance sur un "anneau" 1D périodisé (site 0 = site N)
 def distance_reseau_1D(x,y,z,x1,y1,z1):
-    var=sqrt((x-(x1-N*a))**2+(y-y1)**2+(z-z1)**2)
+    var=sqrt((x-(x1-N))**2+(y-y1)**2+(z-z1)**2)
     return min(var,sqrt((x-x1)**2+(y-y1)**2+(z-z1)**2)) 
 
 
 #Nombre d'ELECTRONS mis dans le système
 #On remplit les états de façon non magnétique : en partant de l'état fondamental ; 
 #2 électrons (spins up et down) par état
-NB=N/2
-#NB=N_occ/2 où N-occ est le nombre d'ETATS occupés
+NB=100
+#NB=2*N_occ où N_occ est le nombre d'ETATS occupés
 
 #Demi-remplissage : NB=N 
 #(N niveaux en tout ; 2 électrons par niveaux : donc 2N électrons au total au maximum)
@@ -51,41 +61,43 @@ def terme_facteur_phase(n,m):
     for j in range(NB/2):
     #Nombre de niveaux d'énergie parcourus : NB/2 (moitié du nombre d'électrons)
         if (j!=n):
-            #rajouter la condition : j est un état occupé de même spin ? Faire une fonction qui dit si l'état est occupé ou non ?
-            #print(cos((k[n]-k[j])*(m-l)*a))
-            res+= -cos((k[n]-k[3*N/8+j])*m*a)
+            res+= -cos((k[n]-k[(N-NB/2)/2+j])*m*a)
     #Cas où tous les états sont occupés
-    return NB+res
-
+    if (n < (N-NB/2)/2) or (n >= (N+NB/2)/2):
+        #Dans ce cas l'état "k_n" n'est pas occupé
+        return NB-1+res
+    if (n >= (N-NB/2)/2) or (n < (N+NB/2)/2):
+        #Dans ce cas l'état "k_n" est occupé
+        return NB+res
+    #return res
+    #Effet du terme de Fock seul
+   
     
 def F(m,r1,r2,theta1,theta2,phi1,phi2):
-    return (pi**2)*(2*pi)**2*(pi*(d/a)**2/2)*r1**2*r2**2*sin(theta1)*sin(theta2)/sqrt(r1**2+r2**2-2*r1*r2*(sin(theta1)*sin(theta2)*cos(phi1-phi2)+cos(theta1)*cos(theta2))+2*m*(r2*sin(theta2)*cos(phi2)-r1*cos(phi1)*sin(theta1))+m**2)
+    #var=sqrt(r1**2+r2**2-2*r1*r2*(sin(theta1)*sin(theta2)*cos(phi1-phi2)+cos(theta1)*cos(theta2))+2*m*(r2*sin(theta2)*cos(phi2)-r1*cos(phi1)*sin(theta1))+m**2)
+    #distance=min(var,sqrt(r1**2+r2**2-2*r1*r2*(sin(theta1)*sin(theta2)*cos(phi1-phi2)+cos(theta1)*cos(theta2))+2*(m-N)*(r2*sin(theta2)*cos(phi2)-r1*cos(phi1)*sin(theta1))+(m-N)**2))
+    #return r1**2*r2**2*sin(theta1)*sin(theta2)/distance
+    return r1**2*r2**2*sin(theta1)*sin(theta2)/distance_reseau_1D(r1*sin(theta1)*cos(phi1)-m,r1*sin(theta1)*sin(phi1),r1*cos(phi1),r2*sin(theta2)*cos(phi2),r2*sin(theta2)*sin(phi2),r2*cos(phi2))
+    
     
 #Facteur exp(-2*r1**2/(d/a)**2)*exp(-2*r1**2/(d/a)**2) dans l'intégrande : contenu dans
 #le tirage de r1 et r2 selon des gaussiennes    
 #Premier facteur : facteur de renormalisation de la densité de la gaussienne
     
-nb=100000.
-
-r1_0=0.
-r2_0=0.
-theta1_0=0.
-theta2_0=0.
-phi1_0=0.
-phi2_0=0.
+nb=10000.
 
 
 def I_1D(m):
     
-    Y=[0 for m in range(6)]    
+    Y=[0 for i in range(6)]    
     res=0
-    Y=[r1_0,r2_0,theta1_0,theta2_0,phi1_0,phi2_0]
-    for i in range(99999):
+
+    for i in range(9999):
         #Tirage d'un (i+1)ème uplet de variables aléatoires
     
         
-        Y[0]=numpy.random.normal(0,(d/a)/2.)
-        Y[1]=numpy.random.normal(0,(d/a)/2.)
+        Y[0]=numpy.random.normal(0,(d/a)/sqrt(2.))
+        Y[1]=numpy.random.normal(0,(d/a)/sqrt(2.))
         Y[2]=random.uniform(0,pi)
         Y[3]=random.uniform(0,pi)
         Y[4]=random.uniform(0,2*pi)
@@ -93,25 +105,65 @@ def I_1D(m):
         
         res+= F(m,Y[0],Y[1],Y[2],Y[3],Y[4],Y[5])
    
-    return (res/nb)
+    return  (pi**2/d)*(a/d)**3*(res/nb)
 #Facteur K**4 * a**5 (où K est la partie angulaire de l'orbitale atomique)
 
 
 """
-n=N/2
+
 tab=[0 for i in range(N)]
 for m_1 in range(N):
-    tab[m_1]=I_1D_Metropolis(m_1)*terme_facteur_phase(n,m_1)
+    tab[m_1]=I_1D(m_1)
     #print("I_1D({0}) : {1} ".format(m_1,I_1D_Metropolis(m_1)))
     #print("Delta({2},{0}) : {1} ".format(m_1,terme_facteur_phase(n,m_1),n))
-    print("I_1D({0})*Delta({2},{0}) : {1} ".format(m_1,I_1D_Metropolis(m_1)*terme_facteur_phase(n,m_1),n))
+    #print("I_1D({0})*Delta({2},{0}) : {1} ".format(m_1,I_1D_Metropolis(m_1)*terme_facteur_phase(n,m_1),n))
+    print("I_1D({0}) : {1} ".format(m_1,I_1D(m_1)))
+
 
 M=[i for i in range(N)]
 plot(M,tab)
 """
 
+"""
+#Estimation de l'écart type sur I_1D(m) pour un nombre de tirages donné
+m=2
+  
+#Nombre de calculs de la correction (=nb de fois que l'on a simulé une chaîne de Markov)
+p=10.
+
+#Estimateur de la moyenne
+mu=0.
+
+#Somme des réalisations
+sum=0.
+
+#Estimteur de la moyenne du carré
+moy=0.
+
+#Somme des carrés des réalisations
+sum2=0.
+
+#Estimateur de l'écart type
+sigma=0.
+
+for i in range(10):
+
+    tps1=time.clock()
+    var =I_1D(m)
+    tps2=time.clock()
+    sum +=var
+    sum2+=var**2
+    print("I_1D({0}) : {1}  Temps calcul : {2} ".format(m,var,tps2-tps1))   
+
+mu=sum/p
+moy=sum2/p
+sigma=sqrt(moy-mu**2)
+print("Ecart-type : {0}  Moyenne : {1}".format(sigma,mu))
+print("Pourcentage : {0} %".format(100*sigma/mu))
+"""
 
 
+"""
 #Avec cette méthode, on recalcule pour chaque m 
 #I_1D(m) avec nb tirages du 6-uplet (rho1,rho2,theta1,theta2,phi1,phi2)
 def Delta_Hartree_Fock(n):
@@ -119,7 +171,7 @@ def Delta_Hartree_Fock(n):
     tab_I_1D=[0 for i in range(N)]
     for m in range(N):
         tab_I_1D[m]=I_1D(m)*terme_facteur_phase(n,m)
-        res2+= tab_I_1D[m]*terme_facteur_phase(n,m)
+        res2+= tab_I_1D[m]
         #Le calcul de I_1D(m) nécessite à chaque m nb tirages...
         
     #abscisses_m=[i for i in range(N)]
@@ -133,6 +185,7 @@ nb_tirages=100000.
 
 #Avec cette méthode, on évalue pour chaque tirage la valeur de l'intégrande de I_1D
 #pour chaque m.
+#Rajouter variable de spin en argument ?
 def Delta_Hartree_Fock_bis(n):
     res=[0 for i in range(N)]
     
@@ -147,11 +200,11 @@ def Delta_Hartree_Fock_bis(n):
         Y[4]=random.uniform(-pi,pi) 
         Y[5]=random.uniform(-pi,pi)
      
-        tab=[0 for i in range(N)]
+        #tab=[0 for i in range(N)]
         
         for m in range(N):
             res[m]+=F(m,Y[0],Y[1],Y[2],Y[3],Y[4],Y[5])
-            tab[m] = F(m,Y[0],Y[1],Y[2],Y[3],Y[4],Y[5])
+            #tab[m] = F(m,Y[0],Y[1],Y[2],Y[3],Y[4],Y[5])
             
         #Vérification que pour un tirage des variables donné, m -> F(m,Y[0],Y[1],Y[2],Y[3],Y[4],Y[5]) évolue bien en 1/|m|
         #abscisses_m=[i for i in range(10)]
@@ -160,29 +213,112 @@ def Delta_Hartree_Fock_bis(n):
         #plot(abscisses_m,tab[0:10])
         
     I_1D_estime=[0 for i in range(N)]
-    I_1D_estime[m]=res[m]/nb_tirages
+    
+    for k in range(N):
+        I_1D_estime[k]=(4*pi**3/d)*(a/d)**3*(res[k]/nb_tirages)
     
     resultat_correction_energie=0
+    
     for k in range(N):
         resultat_correction_energie += I_1D_estime[k]*terme_facteur_phase(n,k)
         
     return (e2/N)*resultat_correction_energie
+"""
 
 
-#print(Delta_Hartree_Fock_bis(0))
+""" 
+n=0
+ 
+#Estimation de l'écart type pour un nombre de tirages donné
+    
+#Nombre de calculs de la correction (=nb de fois que l'on a simulé une chaîne de Markov)
+p=10.
 
+#Estimateur de la moyenne
+mu=0.
+
+#Somme des réalisations
+sum=0.
+
+#Estimteur de la moyenne du carré
+m=0.
+
+#Somme des carrés des réalisations
+sum2=0.
+
+#Estimateur de l'écart type
+sigma=0.
+
+for i in range(10):
+
+    tps1=time.clock()
+    var =Delta_Hartree_Fock_bis(n)
+    tps2=time.clock()
+    sum +=var
+    sum2+=var**2
+    print("Delta_Hartree_Fock_bis({0}) : {1}  Temps calcul : {2} ".format(n,var,tps2-tps1))   
+
+mu=sum/p
+m=sum2/p
+sigma=sqrt(m-mu**2)
+print("Ecart-type : {0}  Moyenne : {1}".format(sigma,mu))
+print("Pourcentage : {0} %".format(100*sigma/mu))
+"""
 
 
 correction_energie=[0 for i in range(N)]
+
+valeurs_I_1D=[0 for i in range(N)]
+#On calcule les valeurs de I_1D une fois pour toutes (en faisant beaucoup de tirages pour un m donné et ainsi avoir peu d'incertitudes)
+#(elles sont indépendantes de n ; n n'intervient que dans le facteur de phase)
+for m in range(N):
+    valeurs_I_1D[m]=I_1D(m)
+
+"""    
+M=[i for i in range(N)]
+plot(M,valeurs_I_1D)
+show()
+hold()
+"""
    
-for n in range(N):
+#print(valeurs_I_1D)
+    
+for v in range(N):
     tps1=time.clock()
-    correction_energie[n]=Delta_Hartree_Fock_bis(n)
+    
+    res=0
+    for u in range(N):
+        #print("terme_facteur_phase({0},{1}) = {2}".format(v,u,terme_facteur_phase(v,u)))
+        res+= valeurs_I_1D[u]*terme_facteur_phase(v,u)
+        
+    correction_energie[v]=(e2/N)*res
+    #En Joules. A convertir en eV
+    
     tps2=time.clock()
-    print("Delta_Hartree_Fock({0})= {1}  Temps calcul : {2}".format(n,correction_energie[n],tps2-tps1))
+    #print("Delta_Hartree_Fock({0})= {1}  Temps calcul : {2}".format(v,correction_energie[v],tps2-tps1))
+
+
 
 plot(k,correction_energie)
 xlabel("k")
-ylabel("Delta_HF(k)")
+ylabel("Delta_HF(k) en Joules")
+show()
+hold()
 
-numpy.savetxt('Correction_energie_1D_polaires_N=50_nb=100000_NB=25_13_12.txt',tab,newline='\n')
+ 
+#numpy.savetxt('Correction_energie_1D_polaires_N=50_nb=10000_NB=50_20_12_methode_1.txt',correction_energie,newline='\n')
+
+
+#Energie calculee en tight-binding : E0, t0 et t sont exprimés en eV
+energie_sans_correction=[(E0-t0-2*t*cos(k[i]*a)) for i in range(N) ]
+
+#energie_corrigee_ajustee=[(E0-t0-2*t*cos(k[i])+2*t*(correction_energie[i]-correction_energie[N/2])/((correction_energie[0]+correction_energie[1])/2-correction_energie[N/2])) for i in range(N)]
+
+energie_corrigee=[(E0-t0-2*t*cos(k[i]*a)+(1/(1.6*math.pow(10,-19)))*correction_energie[i]) for i in range(N)]
+
+energie=[(energie_sans_correction[i],energie_corrigee[i]) for i in range(N)]
+
+
+plot(k,energie) 
+xlabel("k")
+ylabel("E(k), E(k)_corrigee en eV")

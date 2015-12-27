@@ -89,13 +89,13 @@ ax.zaxis.set_major_formatter(plt.FormatStrFormatter('%.02f'))
 
 plt.show()
 
-"""
+
 X,Y= meshgrid(k_x,k_y)
-ax.plot_surface(X,Y,energie_2D)
-show()
+#ax.plot_surface(X,Y,energie_2D_bis)
+#show()
 pcolor(X,Y,energie_2D)# Projection 3D (vue du dessus ; couleurs selon l'intensité)
 show()
-"""
+
 
 
 def integrande(z,E) :

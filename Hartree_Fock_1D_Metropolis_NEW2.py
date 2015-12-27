@@ -35,7 +35,7 @@ import time
 #Estimation de la correction à l'énergie dûe au terme de Hartree-Fock pour des orbitales atomiques gaussiennes
 
 e2=2.3*math.pow(10,-28) 
-N=20
+N=50
 E0=13
 t0=0.5
 t=2
@@ -80,17 +80,18 @@ def distance_reseau_1D(x,y,z,x1,y1,z1):
     return min(var,sqrt((x-x1)**2+(y-y1)**2+(z-z1)**2)) 
 
 
-k=numpy.linspace(-pi/a,pi/a,N)
+k=[(-(2*pi/(N*a))*floor(N/2.)+i*(2*pi/(N*a))) for i in range(0,N)]
 #print(k)
-#k[O] sera donc égal à -pi/a et k[N/2] à  0. On peut translater les indices
+
+NB=50
 
 def terme_facteur_phase(n,m):
     res=0
-    for j in range(N):
+    for j in range(NB/2):
         if (j!=n):
             #rajouter la condition : j est un état occupé de même spin ? Faire une fonction qui dit si l'état est occupé ou non ?
             #print(cos((k[n]-k[j])*(m-l)*a))
-            res+= -cos((k[n]-k[j])*(m-l)*a)
+            res+= -cos((k[n]-k[(N-NB/2)/2+j])*(m-l)*a)
     #Cas où tous les états sont occupés (cas général : N_occ - Delta(k_n,occ))
     return N+res
 
@@ -122,7 +123,7 @@ def T(n,X,Y):
     return 0
 
 #Taille caractéristique de la boule où l'on tire r_(n+1) à partir de r_n
-d1=0.01*a
+#d1=0.01*a
 #N'intervient plus dans ce code (pour ce choix particulier de taux de transition)
 #Plus d1 est grand, plus la zone explorée est grande dans un laps de temps donné
 
@@ -156,7 +157,7 @@ def Delta_Fock_w_s_i_Metropolis(n):
     res=0
     X[0]=[m0,x_0,x_1,x_2,y_0,y_1,y_2]
     #print(X[0])
-    res+= F(n,X[0][0],X[0][1],X[0][2],X[0][3],X[0][4],X[0][5],X[0][6])
+
     print(res)
     for i in range(99999):
         #Tirage d'un (i+1)ème uplet de variables aléatoires (l,m,r,r')
@@ -203,15 +204,16 @@ def Delta_Fock_w_s_i_Metropolis(n):
         #X[i+1]=[l_(i+1),m_(i+1),r_(i+1),r'_(i+1)]
         #print(X[i+1])
         #print(terme_facteur_phase(n,X[i+1][0]))
-        res+= F(n,X[i+1][0],X[i+1][1],X[i+1][2],X[i+1][3],X[i+1][4],X[i+1][5],X[i+1][6])
+        if (i>=90000):
+            res+= F(n,X[i+1][0],X[i+1][1],X[i+1][2],X[i+1][3],X[i+1][4],X[i+1][5],X[i+1][6])
         #print(res)
     #print(cmpt)
-    return (res/nb)
+    return (res/9999.)
 #Cette correction est à multiplier par e2*a**5 * (partie angulaire de la fction d'onde)**4
     
     
     
-n=5
+n=1
  
 #Estimation de l'écart type pour un nombre de tirages donné
     
@@ -246,10 +248,10 @@ mu=sum/p
 m=sum2/p
 sigma=sqrt(m-mu**2)
 print("Ecart-type : {0}  Moyenne : {1}".format(sigma,mu))
-print("Pourcentage : {0} %".format(sigma/mu))
+print("Pourcentage : {0} %".format(100*sigma/mu))
 
 
-
+"""
 tab=[0 for i in range(N)]
 for m in range(N):
     tps3=time.clock()
@@ -262,7 +264,7 @@ numpy.savetxt('Correction_energie_1D_N=20_nb=1000000_essai1_07_12.txt',tab,newli
 plot(k,tab)
 xlabel("k")
 ylabel("Delta_HF(k)")
-
+"""
 
 #energie_corrigee=[(E0-t0-2*t*cos(-pi/a+m*(2*pi/(N*a)))+tab[i]) for i in range(N)]
 #plot(k,energie_corrigee)
