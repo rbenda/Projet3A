@@ -35,7 +35,7 @@ def distance_reseau_1D(x,y,z,x1,y1,z1):
 #Nombre d'ELECTRONS mis dans le système
 #On remplit les états de façon non magnétique : en partant de l'état fondamental ; 
 #2 électrons (spins up et down) par état
-NB=N
+NB=N/2
 #NB=N_occ/2 où N-occ est le nombre d'ETATS occupés
 
 #Demi-remplissage : NB=N 
@@ -53,7 +53,7 @@ def terme_facteur_phase(n,m):
         if (j!=n):
             #rajouter la condition : j est un état occupé de même spin ? Faire une fonction qui dit si l'état est occupé ou non ?
             #print(cos((k[n]-k[j])*(m-l)*a))
-            res+= -cos((k[n]-k[N/4+j])*m*a)
+            res+= -cos((k[n]-k[3*N/8+j])*m*a)
     #Cas où tous les états sont occupés
     return NB+res
 
@@ -118,18 +118,18 @@ def Delta_Hartree_Fock(n):
     res2=0
     tab_I_1D=[0 for i in range(N)]
     for m in range(N):
-        tab_I_1D[m]=I_1D(m)
+        tab_I_1D[m]=I_1D(m)*terme_facteur_phase(n,m)
         res2+= tab_I_1D[m]*terme_facteur_phase(n,m)
         #Le calcul de I_1D(m) nécessite à chaque m nb tirages...
         
-    abscisses_m=[i for i in range(N)]
-    plot(abscisses_m,tab_I_1D)
+    #abscisses_m=[i for i in range(N)]
+    #plot(abscisses_m,tab_I_1D)
     return (e2/N)*res2
     
-print(Delta_Hartree_Fock(2))
+#print(Delta_Hartree_Fock(2))
 
 
-nb_tirages=10000.
+nb_tirages=100000.
 
 #Avec cette méthode, on évalue pour chaque tirage la valeur de l'intégrande de I_1D
 #pour chaque m.
@@ -138,7 +138,7 @@ def Delta_Hartree_Fock_bis(n):
     
     Y=[0 for i in range(6)]
 
-    for i in range(9999):
+    for i in range(99999):
         #Tirage d'un (i+1)ème uplet de variables aléatoires
         Y[0]=numpy.random.normal(0,(d/a)/2.)
         Y[1]=numpy.random.normal(0,(d/a)/2.)
@@ -172,7 +172,7 @@ def Delta_Hartree_Fock_bis(n):
 #print(Delta_Hartree_Fock_bis(0))
 
 
-"""
+
 correction_energie=[0 for i in range(N)]
    
 for n in range(N):
@@ -185,5 +185,4 @@ plot(k,correction_energie)
 xlabel("k")
 ylabel("Delta_HF(k)")
 
-numpy.savetxt('Correction_energie_1D_polaires_N=50_nb=50000_NB=50_essai1_13_12.txt',tab,newline='\n')
-"""
+numpy.savetxt('Correction_energie_1D_polaires_N=50_nb=100000_NB=25_13_12.txt',tab,newline='\n')
