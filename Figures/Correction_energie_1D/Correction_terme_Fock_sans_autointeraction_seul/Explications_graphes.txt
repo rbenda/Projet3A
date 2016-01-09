@@ -1,0 +1,2 @@
+Ici : sous entendu : terme de Fock sans auto-interaction seul. Pour N grand, la discontinuité en k=kF est gommée et on remarque alors peu de différence avec le terme
+de Fock complet, incluant le terme d'auto-interaction.

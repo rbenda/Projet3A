@@ -80,7 +80,7 @@ def terme_facteur_phase(n_x,n_y,l1,p1):
 
     for j_x in range(alpha1):
         for j_y in range(alpha2):
-            if (j_x!=n_x) or (j_y!=n_y):
+            if ((N-alpha1)/2+j_x!=n_x) or ((N-alpha2)/2+j_y!=n_y):
                 #rajouter la condition : j est un état occupé de même spin ? 
                 #Faire une fonction qui dit si l'état est occupé ou non ?
                 res+= -cos((k_x[n_x]-k_x[(N-alpha1)/2+j_x])*(l1-l2)*a+(k_y[n_y]-k_y[(N-alpha2)/2+j_y])*(p1-p2)*a)

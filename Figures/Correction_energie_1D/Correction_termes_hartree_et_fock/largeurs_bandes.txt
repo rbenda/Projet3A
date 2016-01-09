@@ -1,0 +1,158 @@
+N=50
+
+NB=1
+Largeurs de bande des états vides et occupés après correction par Hartree-Fock :
+Post-correction : Delta_occ= 0.0 eV , Delta_vide=8.0 eV
+Post-correction : Delta_occ/Delta_vide= 0.0
+Avant correction : Delta_occ= 0.0 eV , Delta_vide=8.0 eV
+Avant-correction : Delta_occ/Delta_vide= 0.0
+
+NB=2
+Largeurs de bande des états vides et occupés après correction par Hartree-Fock :
+Post-correction : Delta_occ= 0.0 eV , Delta_vide=10.5688110935 eV
+Post-correction : Delta_occ/Delta_vide= 0.0
+Avant correction : Delta_occ= 0.0 eV , Delta_vide=7.96845880526 eV
+Avant-correction : Delta_occ/Delta_vide= 0.0
+
+NB=5
+Largeurs de bande des états vides et occupés après correction par Hartree-Fock :
+Post-correction : Delta_occ= 1.42903199318 eV , Delta_vide=12.1033546259 eV
+Post-correction : Delta_occ/Delta_vide= 0.118069083932
+Avant correction : Delta_occ= 0.0315411947421 eV , Delta_vide=7.96845880526 eV
+Avant-correction : Delta_occ/Delta_vide= 0.00395825535564
+
+NB=6
+Largeurs de bande des états vides et occupés après correction par Hartree-Fock :
+Post-correction : Delta_occ= 1.63738440681 eV , Delta_vide=13.1637825923 eV
+Post-correction : Delta_occ/Delta_vide= 0.12438555524
+Avant correction : Delta_occ= 0.0315411947421 eV , Delta_vide=7.87433264451 eV
+Avant-correction : Delta_occ/Delta_vide= 0.00400557052464
+
+NB=8
+Largeurs de bande des états vides et occupés après correction par Hartree-Fock :
+Post-correction : Delta_occ= 2.54570887865 eV , Delta_vide=14.3016516781 eV
+Post-correction : Delta_occ/Delta_vide= 0.178001040436
+Avant correction : Delta_occ= 0.125667355485 eV , Delta_vide=7.87433264451 eV
+Avant-correction : Delta_occ/Delta_vide= 0.0159591118586
+
+NB=20
+Largeurs de bande des états vides et occupés après correction par Hartree-Fock :
+Post-correction : Delta_occ= 5.67629635597 eV , Delta_vide=16.6354712375 eV
+Post-correction : Delta_occ/Delta_vide= 0.341216444964
+Avant correction : Delta_occ= 0.7639320225 eV , Delta_vide=7.2360679775 eV
+Avant-correction : Delta_occ/Delta_vide= 0.105572809
+
+NB=35
+Largeurs de bande des états vides et occupés après correction par Hartree-Fock :
+Post-correction : Delta_occ= 9.07017284008 eV , Delta_vide=15.5222430804 eV
+Post-correction : Delta_occ/Delta_vide= 0.584333900269
+Avant correction : Delta_occ= 1.85669282008 eV , Delta_vide=5.70311716626 eV
+Avant-correction : Delta_occ/Delta_vide= 0.325557544402
+
+NB=50
+Largeurs de bande des états vides et occupés après correction par Hartree-Fock :
+Post-correction : Delta_occ= 12.7069290948 eV , Delta_vide=12.7069290948 eV
+Post-correction : Delta_occ/Delta_vide= 1.0
+Avant correction : Delta_occ= 3.74883792188 eV , Delta_vide=3.74883792188 eV
+Avant-correction : Delta_occ/Delta_vide= 1.0
+
+NB=70
+Largeurs de bande des états vides et occupés après correction par Hartree-Fock :
+Post-correction : Delta_occ= 15.8045524867 eV , Delta_vide=7.9968065075 eV
+Post-correction : Delta_occ/Delta_vide= 1.97635799639
+Avant correction : Delta_occ= 6.14330717992 eV , Delta_vide=1.45030404101 eV
+Avant-correction : Delta_occ/Delta_vide= 4.23587537938
+
+NB=80
+Largeurs de bande des états vides et occupés après correction par Hartree-Fock :
+Post-correction : Delta_occ= 16.7784859817 eV , Delta_vide=5.64694710712 eV
+Post-correction : Delta_occ/Delta_vide= 2.97124900649
+Avant correction : Delta_occ= 7.2360679775 eV , Delta_vide=0.7639320225 eV
+Avant-correction : Delta_occ/Delta_vide= 9.472135955
+
+N=200
+
+NB=2
+Largeurs de bande des états vides et occupés après correction par Hartree-Fock :
+Post-correction : Delta_occ= 0.0 eV , Delta_vide=8.83809170018 eV
+Post-correction : Delta_occ/Delta_vide= 0.0
+Avant correction : Delta_occ= 0.0 eV , Delta_vide=7.99802624146 eV
+Avant-correction : Delta_occ/Delta_vide= 0.0
+
+N=500
+NB=1
+Largeurs de bande des états vides et occupés après correction par Hartree-Fock :
+Post-correction : Delta_occ= 0.0 eV , Delta_vide=8.0 eV
+Post-correction : Delta_occ/Delta_vide= 0.0
+Avant correction : Delta_occ= 0.0 eV , Delta_vide=8.0 eV
+Avant-correction : Delta_occ/Delta_vide= 0.0
+
+NB=2
+Largeurs de bande des états vides et occupés après correction par Hartree-Fock :
+Post-correction : Delta_occ= 0.0 eV , Delta_vide=8.38710931373 eV
+Post-correction : Delta_occ/Delta_vide= 0.0
+Avant correction : Delta_occ= 0.0 eV , Delta_vide=7.99968417682 eV
+Avant-correction : Delta_occ/Delta_vide= 0.0
+
+NB=10
+Largeurs de bande des états vides et occupés après correction par Hartree-Fock :
+Post-correction : Delta_occ= 0.276868567415 eV , Delta_vide=9.35638997004 eV
+Post-correction : Delta_occ/Delta_vide= 0.0295913881637
+Avant correction : Delta_occ= 0.0012632428668 eV , Delta_vide=7.99715789056 eV
+Avant-correction : Delta_occ/Delta_vide= 0.000157961476325
+
+NB=20
+Largeurs de bande des états vides et occupés après correction par Hartree-Fock :
+Post-correction : Delta_occ= 0.518583518238 eV , Delta_vide=10.2582237532 eV
+Post-correction : Delta_occ/Delta_vide= 0.0505529544603
+Avant correction : Delta_occ= 0.00789308628691 eV , Delta_vide=7.99210691371 eV
+Avant-correction : Delta_occ/Delta_vide= 0.000987610197427
+
+NB=50
+Largeurs de bande des états vides et occupés après correction par Hartree-Fock :
+Post-correction : Delta_occ= 1.17629930064 eV , Delta_vide=12.0924965389 eV
+Post-correction : Delta_occ/Delta_vide= 0.0972751405683
+Avant correction : Delta_occ= 0.0453930210483 eV , Delta_vide=7.94674377683 eV
+Avant-correction : Delta_occ/Delta_vide= 0.00571215359688
+
+NB=100
+Largeurs de bande des états vides et occupés après correction par Hartree-Fock :
+Post-correction : Delta_occ= 2.36511040266 eV , Delta_vide=13.8283558394 eV
+Post-correction : Delta_occ/Delta_vide= 0.171033377368
+Avant correction : Delta_occ= 0.195773934819 eV , Delta_vide=7.80422606518 eV
+Avant-correction : Delta_occ/Delta_vide= 0.0250856309369
+
+NB=250
+Largeurs de bande des états vides et occupés après correction par Hartree-Fock :
+Post-correction : Delta_occ= 6.15602881567 eV , Delta_vide=15.9922689439 eV
+Post-correction : Delta_occ/Delta_vide= 0.384937799463
+Avant correction : Delta_occ= 1.15385729116 eV , Delta_vide=6.8105998792 eV
+Avant-correction : Delta_occ/Delta_vide= 0.169420801637
+
+NB=400
+Largeurs de bande des états vides et occupés après correction par Hartree-Fock :
+Post-correction : Delta_occ= 9.63140791046 eV , Delta_vide=13.9093689315 eV
+Post-correction : Delta_occ/Delta_vide= 0.692440322627
+Avant correction : Delta_occ= 2.7639320225 eV , Delta_vide=5.2360679775 eV
+Avant-correction : Delta_occ/Delta_vide= 0.527864045
+
+NB=500
+Largeurs de bande des états vides et occupés après correction par Hartree-Fock :
+Post-correction : Delta_occ= 11.8806256953 eV , Delta_vide=11.8806256953 eV
+Post-correction : Delta_occ/Delta_vide= 1.0
+Avant correction : Delta_occ= 4.0 eV , Delta_vide=4.0 eV
+Avant-correction : Delta_occ/Delta_vide= 1.0
+
+NB=750
+Largeurs de bande des états vides et occupés après correction par Hartree-Fock :
+Post-correction : Delta_occ= 15.577526117 eV , Delta_vide=6.049742837 eV
+Post-correction : Delta_occ/Delta_vide= 2.57490715502
+Avant correction : Delta_occ= 6.8105998792 eV , Delta_vide=1.15385729116 eV
+Avant-correction : Delta_occ/Delta_vide= 5.90246292272
+
+NB=1000
+Largeurs de bande des états vides et occupés après correction par Hartree-Fock :
+Post-correction : Delta_occ= 8.0 eV , Delta_vide=0.0 eV
+
+
+

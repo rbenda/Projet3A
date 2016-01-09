@@ -10,6 +10,7 @@ Ce code permet de calculer la correction à l'énergie d'un niveau électronique
 en écrivant les intégrales I_1D(m) en coordonnées sphériques et en tirant les variables radiales
 selon des lois gaussiennes et les variables angulaires uniformément.
 L'invariance par translation dans la somme a été prise en compte.
+Erreur d'indice (j au lieu de (N-NB/2)/2+j) corrigée
 """
 
 
@@ -23,7 +24,7 @@ import time
 
 
 e2=2.3*math.pow(10,-28) 
-N=500
+N=400
 E0=13
 t0=0.5
 t=2
@@ -45,7 +46,7 @@ def distance_reseau_1D(x,y,z,x1,y1,z1):
 #Nombre d'ELECTRONS mis dans le système
 #On remplit les états de façon non magnétique : en partant de l'état fondamental ; 
 #2 électrons (spins up et down) par état
-NB=100
+NB=200
 #NB=2*N_occ où N_occ est le nombre d'ETATS occupés
 
 #Demi-remplissage : NB=N 
@@ -58,20 +59,36 @@ k=[(-(2*pi/(N*a))*floor(N/2.)+i*(2*pi/(N*a))) for i in range(0,N)]
 
 def terme_facteur_phase(n,m):
     res=0
+    """
+    #Somme des termes d'auto-interaction de Fock et d'Hartree uniquement
     for j in range(NB/2):
     #Nombre de niveaux d'énergie parcourus : NB/2 (moitié du nombre d'électrons)
-        if (j!=n):
+        if ((N-NB/2)/2+j==n):
+            #Terme d'auto-interaction de Fock
             res+= -cos((k[n]-k[(N-NB/2)/2+j])*m*a)
-    #Cas où tous les états sont occupés
     if (n < (N-NB/2)/2) or (n >= (N+NB/2)/2):
         #Dans ce cas l'état "k_n" n'est pas occupé
-        return NB-1+res
+        return res
     if (n >= (N-NB/2)/2) or (n < (N+NB/2)/2):
         #Dans ce cas l'état "k_n" est occupé
-        return NB+res
+        #Terme d'Hartree sans-autointeraction : (N-1) ; terme d'auto-interaction de Hartree 1, si k_n est un état occupé
+        return 1+res  
     #return res
-    #Effet du terme de Fock seul
-   
+    """
+    
+    #Somme des termes de Fock sans interaction et d'Hartree sans interaction
+    for j in range(NB/2):
+    #Nombre de niveaux d'énergie parcourus : NB/2 (moitié du nombre d'électrons)
+        if ((N-NB/2)/2+j!=n):
+            res+= -cos((k[n]-k[(N-NB/2)/2+j])*m*a)
+    if (n < (N-NB/2)/2) or (n >= (N+NB/2)/2):
+        #Dans ce cas l'état "k_n" n'est pas occupé
+        return NB+res
+    if (n >= (N-NB/2)/2) or (n < (N+NB/2)/2):
+        #Dans ce cas l'état "k_n" est occupé
+        return NB-1+res
+    #return res
+    
     
 def F(m,r1,r2,theta1,theta2,phi1,phi2):
     #var=sqrt(r1**2+r2**2-2*r1*r2*(sin(theta1)*sin(theta2)*cos(phi1-phi2)+cos(theta1)*cos(theta2))+2*m*(r2*sin(theta2)*cos(phi2)-r1*cos(phi1)*sin(theta1))+m**2)
@@ -266,6 +283,10 @@ print("Pourcentage : {0} %".format(100*sigma/mu))
 """
 
 
+
+k_F=-k[(N-NB/2)/2]
+print("k_F={0}".format(k_F))
+
 correction_energie=[0 for i in range(N)]
 
 valeurs_I_1D=[0 for i in range(N)]
@@ -291,7 +312,7 @@ for v in range(N):
         #print("terme_facteur_phase({0},{1}) = {2}".format(v,u,terme_facteur_phase(v,u)))
         res+= valeurs_I_1D[u]*terme_facteur_phase(v,u)
         
-    correction_energie[v]=(e2/N)*res
+    correction_energie[v]=(1/(1.6*math.pow(10,-19)))*(e2/N)*res
     #En Joules. A convertir en eV
     
     tps2=time.clock()
@@ -301,7 +322,7 @@ for v in range(N):
 
 plot(k,correction_energie)
 xlabel("k")
-ylabel("Delta_HF(k) en Joules")
+ylabel("Delta_HF(k) en eV")
 show()
 hold()
 
@@ -314,11 +335,49 @@ energie_sans_correction=[(E0-t0-2*t*cos(k[i]*a)) for i in range(N) ]
 
 #energie_corrigee_ajustee=[(E0-t0-2*t*cos(k[i])+2*t*(correction_energie[i]-correction_energie[N/2])/((correction_energie[0]+correction_energie[1])/2-correction_energie[N/2])) for i in range(N)]
 
-energie_corrigee=[(E0-t0-2*t*cos(k[i]*a)+(1/(1.6*math.pow(10,-19)))*correction_energie[i]) for i in range(N)]
+energie_corrigee=[(E0-t0-2*t*cos(k[i]*a)+correction_energie[i]) for i in range(N)]
+
+niveau_Fermi_non_corrige=[(E0-t0-2*t*cos(k_F*a)) for i in range(N)]
+
+niveau_Fermi_corrige=[energie_corrigee[(N-NB/2)/2] for i in range(N)]
 
 energie=[(energie_sans_correction[i],energie_corrigee[i]) for i in range(N)]
 
 
+
+largeur_bande_etats_occupes_apres_correction=energie_corrigee[(N+NB/2)/2]-energie_corrigee[N/2]
+Delta_occ=largeur_bande_etats_occupes_apres_correction
+
+largeur_bande_etats_vides_apres_correction=energie_corrigee[0]-energie_corrigee[(N-NB/2)/2]
+Delta_vide=largeur_bande_etats_vides_apres_correction
+
+
+Delta_occ_1=energie_sans_correction[(N+NB/2)/2]-energie_sans_correction[N/2]
+Delta_vide_1=energie_sans_correction[0]-energie_sans_correction[(N-NB/2)/2]
+
+
 plot(k,energie) 
+#text(-10000000000, 17, r'$\Delta L_{occ}, \Delta L_{empty}$',fontsize=17)
 xlabel("k")
 ylabel("E(k), E(k)_corrigee en eV")
+show()
+hold()
+#scatter([k_F],[0])
+
+#LArgeur de bandes des états occupés, largeur de bande des états vides :
+print("Largeurs de bande des états vides et occupés après correction par Hartree-Fock :")
+print("Post-correction : Delta_occ= {0} eV , Delta_vide={1} eV".format(Delta_occ,Delta_vide))
+print("Post-correction : Delta_occ/Delta_vide= {0}".format(Delta_occ/Delta_vide))
+print("Avant correction : Delta_occ= {0} eV , Delta_vide={1} eV".format(Delta_occ_1,Delta_vide_1))
+print("Avant-correction : Delta_occ/Delta_vide= {0}".format(Delta_occ_1/Delta_vide_1))
+
+#print("Ces rapport doivent évoluer de façon monotone avec le remplissage NB, à N fixé")
+
+
+#Derivée de l'énergie corrigée
+#energie_corrigee=[(E0-t0-2*t*cos(k[i]*a)+correction_energie[i]) for i in range(1000)]
+derivee_energie_corrigee=[((energie_corrigee[i+1]-energie_corrigee[i])/(k[i+1]-k[i])) for i in range((N+NB/2)/2-5,(N+NB/2)/2+5)]
+plot(k[(N+NB/2)/2-5:(N+NB/2)/2+5],derivee_energie_corrigee)
+xlabel("k")
+ylabel("dE_corr.(k)/dk en eV.m")
+#Divergence logarithmique en kF : zoomer 10 fois ne fait que doubler la taille du pic /etc...
