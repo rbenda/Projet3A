@@ -102,7 +102,7 @@ def F(l1,p1,r1,r2,theta1,theta2,phi1,phi2):
 #le tirage de r1 et r2 selon des gaussiennes    
 #Premier facteur : facteur de renormalisation de la densité de la gaussienne
     
-nb=1000.
+nb=100.
 
 """
 r1_0=0.
@@ -118,7 +118,7 @@ def I_2D(l1,p1):
     Y=[0 for i in range(6)]    
     res=0
 
-    for i in range(999):
+    for i in range(99):
         #Tirage d'un (i+1)ème uplet de variables aléatoires
     
         

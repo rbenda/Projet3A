@@ -24,7 +24,7 @@ import time
 
 
 e2=2.3*math.pow(10,-28) 
-N=400
+N=50
 E0=13
 t0=0.5
 t=2
@@ -46,7 +46,7 @@ def distance_reseau_1D(x,y,z,x1,y1,z1):
 #Nombre d'ELECTRONS mis dans le système
 #On remplit les états de façon non magnétique : en partant de l'état fondamental ; 
 #2 électrons (spins up et down) par état
-NB=200
+NB=8
 #NB=2*N_occ où N_occ est le nombre d'ETATS occupés
 
 #Demi-remplissage : NB=N 
@@ -87,7 +87,7 @@ def terme_facteur_phase(n,m):
     if (n >= (N-NB/2)/2) or (n < (N+NB/2)/2):
         #Dans ce cas l'état "k_n" est occupé
         return NB-1+res
-    #return res
+    return res
     
     
 def F(m,r1,r2,theta1,theta2,phi1,phi2):
@@ -101,7 +101,7 @@ def F(m,r1,r2,theta1,theta2,phi1,phi2):
 #le tirage de r1 et r2 selon des gaussiennes    
 #Premier facteur : facteur de renormalisation de la densité de la gaussienne
     
-nb=10000.
+nb=1000.
 
 
 def I_1D(m):
@@ -109,7 +109,7 @@ def I_1D(m):
     Y=[0 for i in range(6)]    
     res=0
 
-    for i in range(9999):
+    for i in range(999):
         #Tirage d'un (i+1)ème uplet de variables aléatoires
     
         
@@ -284,7 +284,7 @@ print("Pourcentage : {0} %".format(100*sigma/mu))
 
 
 
-k_F=-k[(N-NB/2)/2]
+k_F=k[(N+NB/2)/2]
 print("k_F={0}".format(k_F))
 
 correction_energie=[0 for i in range(N)]
@@ -313,7 +313,6 @@ for v in range(N):
         res+= valeurs_I_1D[u]*terme_facteur_phase(v,u)
         
     correction_energie[v]=(1/(1.6*math.pow(10,-19)))*(e2/N)*res
-    #En Joules. A convertir en eV
     
     tps2=time.clock()
     #print("Delta_Hartree_Fock({0})= {1}  Temps calcul : {2}".format(v,correction_energie[v],tps2-tps1))
