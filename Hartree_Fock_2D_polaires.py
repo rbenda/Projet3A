@@ -52,9 +52,9 @@ d=a/4.
 #uniquement et donc un seul spin représenté. La correction calculée sera polarisée en spin.
 
 #Nombre de valeurs de k_x occupées 
-alpha1=30
+alpha1=25
 #Nombre de valeurs de k_y occupées 
-alpha2=30
+alpha2=25
 
 NB=alpha1*alpha2
 #NB maximal : 2*(N^2)
@@ -81,17 +81,16 @@ def terme_facteur_phase(n_x,n_y,l1,p1):
     for j_x in range(alpha1):
         for j_y in range(alpha2):
             if ((N-alpha1)/2+j_x!=n_x) or ((N-alpha2)/2+j_y!=n_y):
-                #rajouter la condition : j est un état occupé de même spin ? 
-                #Faire une fonction qui dit si l'état est occupé ou non ?
+                
                 res+= -cos((k_x[n_x]-k_x[(N-alpha1)/2+j_x])*(l1-l2)*a+(k_y[n_y]-k_y[(N-alpha2)/2+j_y])*(p1-p2)*a)
     
-    #if (n_x >= (N-alpha1)/2) and (n_x < (N+alpha1)/2) and (n_y >= (N-alpha2)/2) and (n_y < (N+alpha2)/2):
-    #    return NB+res
-    #else 
+    if (n_x >= (N-alpha1)/2) and (n_x < (N+alpha1)/2) and (n_y >= (N-alpha2)/2) and (n_y < (N+alpha2)/2):
+        return NB-1+res
+    else: 
         #(k_n_x,k_n_y) n'est pas un état occupé
-    #    return NB-1+res
+        return NB+res
     
-    return res
+    #return res
     #Effet du terme de Fock seul
 
     
@@ -164,7 +163,7 @@ def Delta_Hartree_Fock(n_x,n_y):
         
     #abscisses_m=[i for i in range(N)]
     #plot(abscisses_m,tab_I_1D)
-    return (e2/N)*res2
+    return (e2/N**2)*res2
     
 #print(Delta_Hartree_Fock(2))
 
@@ -212,7 +211,7 @@ def Delta_Hartree_Fock_bis(n_x,n_y):
         for p_1 in range(N):
             resultat_correction_energie += I_2D_estime[l1][p1]*terme_facteur_phase(n_x,n_y,l_1,p_1)
         
-    return (e2/N)*resultat_correction_energie
+    return (e2/N**2)*resultat_correction_energie
 """
 
 
@@ -290,7 +289,7 @@ for n_x in range(N):
                 #print("terme_facteur_phase({0},{1}) = {2}".format(v,u,terme_facteur_phase(v,u)))
                 res+= valeurs_I_2D[l1][p1]*terme_facteur_phase(n_x,n_y,l1,p1)
         
-        correction_energie[n_x][n_y]=(1/(1.6*math.pow(10,-19)))*(e2/N)*res
+        correction_energie[n_x][n_y]=(1/(1.6*math.pow(10,-19)))*(e2/N**2)*res
     
         #☺tps2=time.clock()
         #print("Delta_Hartree_Fock({0},{1})= {2}  Temps calcul : {3}".format(n_x,n_y,correction_energie[n_x][n_y],tps2-tps1))
@@ -316,7 +315,7 @@ ax.plot_surface(k_x_1, k_y_1,correction_energie,rstride=10, cstride=10, cmap=plt
 #La fonction plot_surface trace à partir de 3 matrices A, B et C, l'ensemble des points 
 #de coordonnées (A[i][j], B[i][j], C[i][j]) et les relie pour former une surface.
 
-plt.title("Correction given by the Fock term (without self-interaction) for the 2D lattice,  in eV", fontsize=10)
+plt.title("Correction given by the Hartree-Fock term for the 2D lattice,  in eV", fontsize=10)
 plt.show()
 plt.hold()
 #ax.contour(k_x_1, k_y_1, energie_corrigee,zdir='z')
@@ -338,6 +337,7 @@ fig = plt.figure()
 ax = fig.add_subplot(111, projection='3d') #Créaton d'axes 3D
 
 ax.plot_surface(k_x_1, k_y_1,energie_2D_corrigee,rstride=10, cstride=10, cmap=plt.cm.coolwarm, linewidth=0, antialiased=False)
+plt.title("Energy corrected by the Hartree-Fock term for the 2D lattice (eV)", fontsize=10)
 plt.show()
 plt.hold()
 

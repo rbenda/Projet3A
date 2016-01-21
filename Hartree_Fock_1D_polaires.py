@@ -46,7 +46,7 @@ def distance_reseau_1D(x,y,z,x1,y1,z1):
 #Nombre d'ELECTRONS mis dans le système
 #On remplit les états de façon non magnétique : en partant de l'état fondamental ; 
 #2 électrons (spins up et down) par état
-NB=8
+NB=60
 #NB=2*N_occ où N_occ est le nombre d'ETATS occupés
 
 #Demi-remplissage : NB=N 
@@ -379,4 +379,99 @@ derivee_energie_corrigee=[((energie_corrigee[i+1]-energie_corrigee[i])/(k[i+1]-k
 plot(k[(N+NB/2)/2-5:(N+NB/2)/2+5],derivee_energie_corrigee)
 xlabel("k")
 ylabel("dE_corr.(k)/dk en eV.m")
+show()
+hold()
 #Divergence logarithmique en kF : zoomer 10 fois ne fait que doubler la taille du pic /etc...
+
+tab_Delta1_sur_Delta2=[0 for i in range(10)]
+tab_Delta1_sur_Delta2_corr=[0 for i in range(10)]
+
+tab_Delta1_sur_Delta2[0]=0
+tab_Delta1_sur_Delta2_corr[0]=0
+
+tab_Delta1_sur_Delta2[1]=0.000157961476325
+tab_Delta1_sur_Delta2_corr[1]=0.0295913881637
+
+tab_Delta1_sur_Delta2[2]=0.000987610197427
+tab_Delta1_sur_Delta2_corr[2]=0.0505529544603
+
+tab_Delta1_sur_Delta2[3]=0.00571215359688
+tab_Delta1_sur_Delta2_corr[3]=0.0972751405683
+
+
+tab_Delta1_sur_Delta2[4]=0.0250856309369
+tab_Delta1_sur_Delta2_corr[4]=0.171033377368
+
+
+tab_Delta1_sur_Delta2[5]=0.169420801637
+tab_Delta1_sur_Delta2_corr[5]=0.384937799463
+
+
+tab_Delta1_sur_Delta2[6]=0.527864045
+tab_Delta1_sur_Delta2_corr[6]=0.692440322627
+
+tab_Delta1_sur_Delta2[7]=1.0
+tab_Delta1_sur_Delta2_corr[7]=1.0
+
+tab_Delta1_sur_Delta2[8]=1.894427191
+tab_Delta1_sur_Delta2_corr[8]=1.41060978947
+
+tab_Delta1_sur_Delta2[9]=5.90246292272
+tab_Delta1_sur_Delta2_corr[9]=2.57490715502
+
+tableau_NB=[0,10,20,50,100,250,400,500,600,750]
+
+largeur_bandes=[(tab_Delta1_sur_Delta2[i],tab_Delta1_sur_Delta2_corr[i]) for i in range(0,10)]
+
+plot(tableau_NB,largeur_bandes)
+text(100, 4, r'$ \frac{\Delta L_{occ}^{corrige}}{\Delta L_{vide}^{corrige}}$',fontsize=30, color='green')
+
+text(400, 4, r'$ \frac{\Delta L_{occ}}{\Delta L_{vide}} $',fontsize=30, color='blue')
+show()
+
+tab_Delta1_corr_sur_Delta1=[0 for i in range(9)]
+tab_Delta2_corr_sur_Delta2=[0 for i in range(9)]
+
+tableau_NB_bis=[10,20,50,100,250,400,500,600,750]
+
+tab_Delta1_corr_sur_Delta1[0]=219.16
+tab_Delta2_corr_sur_Delta2[0]=1.17
+
+
+tab_Delta1_corr_sur_Delta1[1]=65.7
+tab_Delta2_corr_sur_Delta2[1]=1.2835
+
+
+tab_Delta1_corr_sur_Delta1[2]=25.9
+tab_Delta2_corr_sur_Delta2[2]=1.52
+
+
+tab_Delta1_corr_sur_Delta1[3]=12.08
+tab_Delta2_corr_sur_Delta2[3]=1.77
+
+
+tab_Delta1_corr_sur_Delta1[4]=5.34
+tab_Delta2_corr_sur_Delta2[4]=2.348
+
+
+tab_Delta1_corr_sur_Delta1[5]=3.48
+tab_Delta2_corr_sur_Delta2[5]=2.65
+
+
+tab_Delta1_corr_sur_Delta1[6]=2.97
+tab_Delta2_corr_sur_Delta2[6]=2.97
+
+
+tab_Delta1_corr_sur_Delta1[7]=2.74
+tab_Delta2_corr_sur_Delta2[7]=3.69
+
+tab_Delta1_corr_sur_Delta1[8]=2.287
+tab_Delta2_corr_sur_Delta2[8]=5.24
+
+largeur_bandes_bis=[(tab_Delta1_corr_sur_Delta1[i],tab_Delta2_corr_sur_Delta2[i]) for i in range(9)]
+
+plot(tableau_NB_bis[2:9],largeur_bandes_bis[2:9])
+text(200, 25, r'$ \frac{\Delta L_{occ}^{corrige}}{\Delta L_{occ}}$',fontsize=30, color='blue')
+
+text(500, 25, r'$ \frac{\Delta L_{vide}^{corrige}}{\Delta L_{vide}} $',fontsize=30, color='green')
+show()

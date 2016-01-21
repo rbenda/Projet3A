@@ -28,7 +28,7 @@ import time
 
 
 e2=2.3*math.pow(10,-28) 
-N=30
+N=200
 E0=13
 t0=0.5
 t=2
@@ -69,10 +69,11 @@ if (NB%2==0):
         #Remplissage des états centraux de plus basse énergie et totalement remplis (avec 4l-2 électrons)
         for k in range((N-NB/2)/2+1,(N-NB/2)/2+NB/2):
             tab_spin_up[k]=1
+            #if (k>=(N-NB/2)/2+NB/8) and (k<=(N-NB/2)/2+3*NB/8):
             tab_spin_down[k]=1
         #Rempissage ferromagnétique: (deux électrons restants)
         tab_spin_up[(N-NB/2)/2]=1
-        tab_spin_down[(N-NB/2)/2+NB/2]=1
+        tab_spin_up[(N-NB/2)/2+NB/2]=1
         
         """
         #Rempissage anti-ferromagnétique:
@@ -145,7 +146,7 @@ def terme_facteur_phase(n,sigma_n,m):
     
     
     if (sigma_n==1):
-    #Par convention : 1 désigne up et -1 down
+    #Par convention : 1 désigne up
         res=0
         #Somme des termes de Fock sans interaction et d'Hartree sans interaction
         for j in range(N):
@@ -154,20 +155,12 @@ def terme_facteur_phase(n,sigma_n,m):
                 res+= -tab_spin_up[j]*cos((k[n]-k[j])*m*a)
                 #tab_spin_up[j] vaudra 0 pour des états non occupés, 
                 #ou pour des états occupés par des spins "down" seuls ; et 1 sinon
-        #Conditions de HArtree : à adapter pour chaque remplissage...
-        """
-        if (n < (N-NB/2)/2) or (n >= (N+NB/2)/2):
-            #Dans ce cas l'état "k_n" n'est pas occupé
-            return NB+res
-        if (n >= (N-NB/2)/2) or (n < (N+NB/2)/2):
-            #Dans ce cas l'état "k_n" est occupé
-            return NB-1+res
-        """
+       
         return NB-tab_spin_up[n]+res
         
         
     if (sigma_n==-1):
-    #Par convention : 1 désigne up et -1 down
+    #Par convention : -1 désigne spin down
 
         res=0
         #Somme des termes de Fock sans interaction et d'Hartree sans interaction
@@ -177,14 +170,7 @@ def terme_facteur_phase(n,sigma_n,m):
                 res+= -tab_spin_down[j]*cos((k[n]-k[j])*m*a)
                 #tab_spin_down[j] vaudra 0 pour des états non occupés, 
                 #ou pour des états occupés par des spins "up" seuls ; et 1 sinon
-        """
-        if (n < (N-NB/2)/2) or (n >= (N+NB/2)/2):
-            #Dans ce cas l'état "k_n" n'est pas occupé
-            return NB+res
-        if (n >= (N-NB/2)/2) or (n < (N+NB/2)/2):
-            #Dans ce cas l'état "k_n" est occupé
-            return NB-1+res
-        """
+      
         return NB-tab_spin_down[n]+res
             
 print(terme_facteur_phase(1,-1,1))
@@ -201,7 +187,7 @@ def F(m,r1,r2,theta1,theta2,phi1,phi2):
 #le tirage de r1 et r2 selon des gaussiennes    
 #Premier facteur : facteur de renormalisation de la densité de la gaussienne
     
-nb=5000.
+nb=1000.
 
 
 def I_1D(m):
@@ -209,7 +195,7 @@ def I_1D(m):
     Y=[0 for i in range(6)]    
     res=0
 
-    for i in range(4999):
+    for i in range(999):
         #Tirage d'un (i+1)ème uplet de variables aléatoires
     
         
