@@ -291,7 +291,7 @@ for n_x in range(N):
         
         correction_energie[n_x][n_y]=(1/(1.6*math.pow(10,-19)))*(e2/N**2)*res
     
-        #☺tps2=time.clock()
+        #tps2=time.clock()
         #print("Delta_Hartree_Fock({0},{1})= {2}  Temps calcul : {3}".format(n_x,n_y,correction_energie[n_x][n_y],tps2-tps1))
 
 
