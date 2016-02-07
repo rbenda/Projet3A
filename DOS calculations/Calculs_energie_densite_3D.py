@@ -13,10 +13,10 @@ import math
 from math import *
 from mpl_toolkits.mplot3d import Axes3D
 import matplotlib.pyplot as plt
-import numpy
-from numpy import *
+import numpy as np
+#from numpy import *
 import random
-from Calculs_energie_densite_2D import D_2D
+#from Calculs_energie_densite_2D import D_2D
 
 N=100
 E0=13
@@ -42,28 +42,36 @@ def N_3D(E):
     if (E>E0-t0+6*t):
         return N_3D(E0-t0+6*t)
 
+print(N_3D(E0-t0))
+"""
+nb2=20.
 
-
-nb2=50.
-
-
+"""
 E_3D = np.linspace(E0-t0-7*t,E0-t0+7*t,50)
 nb_etats_3D= [N_3D(E0-t0-7*t+i*(14*t)/nb2) for i in range(0,50,1)]
 """
 #Visualisation continuité de la pente en E0-t0-6t
+"""
+E_3D = linspace(E0-t0-6.5*t,E0-t0-5.5*t,50)
+nb_etats_3D= [N_3D(E0-t0-6.5*t+i*(1*t)/nb2) for i in range(0,50,1)]
+plot(E_3D,nb_etats_3D)
+xlabel("Energy (eV)")
+ylabel("N_3D(E)")
+show()
+"""
 
-#E_3D = linspace(E0-t0-6.5*t,E0-t0-5.5*t,50)
-#nb_etats_3D= [N_3D(E0-t0-6.5*t+i*(1*t)/nb2) for i in range(0,200,1)]
-
-
+"""
 #On peut renormaliser par N**3 pour comparer l'évolution du nombre d'états en 2D et en 3D ?
-#plot(E_3D,nb_etats_3D)
-
+plot(E_3D,nb_etats_3D)
+xlabel("Energy (eV)")
+ylabel("N_3D(E)")
+show()
+"""
 #plot(E_2D,nb_etats_2D)
 
 
 # In[39]:
-
+"""
 #Densité d'états en 3D
 def D_3D(E):
     if (E > E0-t0+2*t):
@@ -76,20 +84,25 @@ def D_3D(E):
         #return (N/pi)*(quad(lambda z: D_2D(E+2*t*cos(z)),0,pi))[0]
 
 
-#densite_etats_3D=[(N_3D(E0-t0-6*t+(i+1)*(12*t)/nb2)-N_3D(E0-t0-6*t+i*(12*t)/nb2))/(12*t/nb2) for i in range(0,nb2-1,1)]
+#2densite_etats_3D=[(N_3D(E0-t0-6*t+(i+1)*(12*t)/nb2)-N_3D(E0-t0-6*t+i*(12*t)/nb2))/(12*t/nb2) for i in range(0,50-1,1)]
 
+#plt.plot(E_3D[0:nb2-1],densite_etats_3D)
 
 E_3D = linspace(E0-t0-6*t,E0-t0+6*t,50)
 densite_etats_3D= [D_3D(E0-t0-6*t+i*(12*t)/50.) for i in range(0,50,1) ]
 
 plt.plot(E_3D,densite_etats_3D)
+show()
 """
+
+
+
 #Calcul de la densité en 3D par la méthode des histogrammes
 
 def energie_3D(kx,ky,kz):
     return E0-t0-2*t*(cos(kx*a)+cos(ky*a)+cos(kz*a))
     
-var=1000000
+var=10000000
 energie=linspace(E0-t0-6*t,E0-t0+6*t,100)
 
 cmpt=linspace(0,100,100)
@@ -109,11 +122,18 @@ for m in range(var):
     cmpt[i]+=1
     
  
+ #On en déduit directement le nombre d'états d'énergie entre E_i et E_(i+1)
+for i in range(100):
+    densite.append(cmpt[i]/(4*3*t/100.))
 
+
+plot(energie,densite)
+xlabel("Energy (eV)")
+ylabel("D_3D(E)")
        
 #Autre méthode : grille uniforme en 3D
   
-"""
+
 """
 for n_x in range(N):
     k_x=-pi/a+n_x*(2*pi/N*a)

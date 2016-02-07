@@ -26,7 +26,7 @@ import matplotlib.pyplot as plt
 
 
 e2=2.3*math.pow(10,-28) 
-N=30
+N=20
 E0=13
 t0=0.5
 t=2
@@ -52,9 +52,9 @@ d=a/4.
 #uniquement et donc un seul spin représenté. La correction calculée sera polarisée en spin.
 
 #Nombre de valeurs de k_x occupées 
-alpha1=25
+alpha1=3
 #Nombre de valeurs de k_y occupées 
-alpha2=25
+alpha2=3
 
 NB=alpha1*alpha2
 #NB maximal : 2*(N^2)
@@ -336,8 +336,11 @@ show()
 fig = plt.figure()
 ax = fig.add_subplot(111, projection='3d') #Créaton d'axes 3D
 
-ax.plot_surface(k_x_1, k_y_1,energie_2D_corrigee,rstride=10, cstride=10, cmap=plt.cm.coolwarm, linewidth=0, antialiased=False)
+
+ax.plot_surface(k_x_1, k_y_1,energie_2D_corrigee,rstride=1, cstride=1, cmap=plt.cm.coolwarm, linewidth=0.05, antialiased=True,alpha=1)
 plt.title("Energy corrected by the Hartree-Fock term for the 2D lattice (eV)", fontsize=10)
+ax.view_init(elev=10,azim=40)
+
 plt.show()
 plt.hold()
 

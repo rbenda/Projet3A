@@ -27,7 +27,7 @@ a=math.pow(10,-10)
 
 
 
-"""
+
 d=4
 def energie_4D(k1,k2,k3,k4):
     return E0-t0-2*t*(cos(k1*a)+cos(k2*a)+cos(k3*a)+cos(k4*a))
@@ -58,7 +58,10 @@ for m in range(var):
 for i in range(100):
     densite.append(cmpt[i]/(4*d*t/100.))
 
-"""
+plot(energie,densite)
+xlabel("Energy (eV)")
+ylabel("D_4D(E)")
+
 
 """
 d=5
@@ -93,10 +96,11 @@ for i in range(1000):
     densite.append(cmpt[i]/(4*d*t/1000.))
             
 plot(energie,densite)  
+xlabel("Energy (eV)")
+ylabel("D_5D(E)")
 """
 
-
-
+"""
 d=10
 def energie_10D(k1,k2,k3,k4,k5,k6,k7,k8,k9,k10):
     return E0-t0-2*t*(cos(k1*a)+cos(k2*a)+cos(k3*a)+cos(k4*a)+cos(k5*a)+cos(k6*a)+cos(k7*a)+cos(k8*a)+cos(k9*a)+cos(k10*a))
@@ -134,6 +138,8 @@ for i in range(100):
     densite.append(cmpt[i]/(4*d*t/100.))
             
 plot(energie,densite)  
-
+xlabel("Energy (eV)")
+ylabel("D_10D(E)")
+"""
 
 

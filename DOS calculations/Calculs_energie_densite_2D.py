@@ -76,6 +76,8 @@ energie_2D_bis=[[energy_2D(-pi/a+i*(2*pi/a)/100,-pi/a+j*(2*pi/a)/100) for i in r
 ax.plot_surface(k_x_1, k_y_1, energie_2D,rstride=10, cstride=10, cmap=plt.cm.coolwarm, linewidth=0, antialiased=False)
 #La fonction plot_surface trace à partir de 3 matrices A, B et C, l'ensemble des points 
 #de coordonnées (A[i][j], B[i][j], C[i][j]) et les relie pour former une surface.
+#xlabel("k_x (10^(10) m^(-1)")
+#ylabel("k_y (10^(10) m^(-1)")
 plt.show()
 ax.contour(k_x_1, k_y_1, energie_2D,zdir='z')
 
@@ -89,13 +91,15 @@ ax.zaxis.set_major_formatter(plt.FormatStrFormatter('%.02f'))
 
 plt.show()
 
-
+"""
 X,Y= meshgrid(k_x,k_y)
 #ax.plot_surface(X,Y,energie_2D_bis)
 #show()
 pcolor(X,Y,energie_2D)# Projection 3D (vue du dessus ; couleurs selon l'intensité)
+#xlabel("k_x (m^(-1))")
+#ylabel("k_y (m^(-1))")
 show()
-
+"""
 
 
 def integrande(z,E) :
@@ -120,7 +124,8 @@ def D_2D(E):
     #(alpha(E)>0)
     if E < E0-t0-4*t or E>E0-t0+4*t:
         return 0
-        
+
+"""   
 print("D_2D(E0-t0) : {0}".format(D_2D(E0-t0)))
 
 nb=1000.0
@@ -129,7 +134,7 @@ densites_2D= [D_2D(E0-t0-5*t+i*(10*t)/1000.) for i in range(0,1000,1)]
 
 
 #Densité d'états d'énergie en 2D
-plot(E_2D,densites_2D,label="D(E)_2D")
+#plot(E_2D,densites_2D,label="D(E)_2D")
 
 E_2D_plus = np.linspace(E0-t0,E0-t0+5*t,nb)
 essai=[N**2*(1/sqrt(E0-t0+i*(5*t)/100.)) for i in range(1000)]
@@ -181,8 +186,12 @@ def N_2D(E):
 nb=1000.0
 
 #Visualisation de la discontinuité de la pente en E0-t0-4t
-#E_2D = linspace(E0-t0-4.5*t,E0-t0-3.5*t,nb)
-#nb_etats_2D= [N_2D(E0-t0-4.5*t+i*(1*t)/1000.) for i in range(0,1000,1)]
+E_2D = linspace(E0-t0-4.5*t,E0-t0-3.5*t,nb)
+nb_etats_2D= [N_2D(E0-t0-4.5*t+i*(1*t)/1000.) for i in range(0,1000,1)]
+plot(E_2D,nb_etats_2D)
+xlabel("Energy (eV)")
+ylabel("N_2D(E)")
+show()
 
 E_2D = np.linspace(E0-t0-5*t,E0-t0+5*t,nb)
 nb_etats_2D= [N_2D(E0-t0-5*t+i*(10*t)/1000.) for i in range(0,1000,1)]
@@ -191,7 +200,9 @@ print("N_2D(E0-t0+4*t) : {0}".format(N_2D(E0-t0+4*t)))
 print("N_2D(E0-t0) : {0}".format(N_2D(E0-t0)))
 print("N_2D(E0-t0-4*t) : {0}".format(N_2D(E0-t0-4*t)))
 
-#plt.plot(E_2D,nb_etats_2D)
+plt.plot(E_2D,nb_etats_2D)
+xlabel("Energy (eV)")
+ylabel("N_2D(E)")
 #Même résultat en traçant la dérivée de D_2D(E)?
 
 essai=[10*N*(sqrt(E0-t0+i*(5*t)/100.)) for i in range(1000)]
@@ -201,6 +212,8 @@ essai=[10*N*(sqrt(E0-t0+i*(5*t)/100.)) for i in range(1000)]
 #print(N_2D(E0-t0+4*t-(8*t)/1000000.))
 
 #print(N_2D(E0-t0-4*t+(1)*(8*t/nb))-N_2D(E0-t0-4*t+0*(8*t/nb)))
+"""
+
 
 """
 nb=100.

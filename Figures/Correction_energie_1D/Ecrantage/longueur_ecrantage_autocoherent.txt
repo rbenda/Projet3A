@@ -1,0 +1,9 @@
+Lambda_ecrantage Etape 0 : 0.0979390317651
+
+Lambda_ecrantage Etape 1 : 0.0979440400906
+
+Lambda_ecrantage Etape 2 : 0.097944592891
+
+Lambda_ecrantage Etape 3 : 0.0979451131024
+
+Lambda_ecrantage Etape 4 : 0.0979459152413
