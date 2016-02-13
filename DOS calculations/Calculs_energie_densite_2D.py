@@ -125,7 +125,7 @@ def D_2D(E):
     if E < E0-t0-4*t or E>E0-t0+4*t:
         return 0
 
-"""   
+ 
 print("D_2D(E0-t0) : {0}".format(D_2D(E0-t0)))
 
 nb=1000.0
@@ -134,7 +134,11 @@ densites_2D= [D_2D(E0-t0-5*t+i*(10*t)/1000.) for i in range(0,1000,1)]
 
 
 #Densité d'états d'énergie en 2D
-#plot(E_2D,densites_2D,label="D(E)_2D")
+plot(E_2D,densites_2D,label="D(E)_2D")
+xlabel("Energy (eV)")
+ylabel("DOS D(E)")
+show()
+hold()
 
 E_2D_plus = np.linspace(E0-t0,E0-t0+5*t,nb)
 essai=[N**2*(1/sqrt(E0-t0+i*(5*t)/100.)) for i in range(1000)]
@@ -144,7 +148,7 @@ essai=[N**2*(1/sqrt(E0-t0+i*(5*t)/100.)) for i in range(1000)]
 
 #Vérification de la normalisation : l'intégrale totale de D_2D(E) doit valoir N**2.
 #Pas de découpe de l'intégrale de Riemann à signaler ? 
-print("Intégrale de D_2D jusqu'à {1} : {0}".format(quad(lambda E : D_2D(E),E0-t0-4*t,E0-t0-0.001*t)[0],E0-t0-0.001*t))
+print("Intégrale de D_2D jusqu'à {1} : {0}".format(quad(lambda E : D_2D(E),E0-t0-4*t,E0-t0-0.01*t)[0],E0-t0-0.01*t))
 print("Intégrale de D_2D jusqu'à {1} : {0}".format(quad(lambda E : D_2D(E),E0-t0+0.01*t,E0-t0+4*t)[0],E0-t0+0.01*t))
 
 #Reprogrammation de l'intégrale de Riemann de l'intégrale entre E0-t0-4*t et E0-t0
@@ -212,15 +216,14 @@ essai=[10*N*(sqrt(E0-t0+i*(5*t)/100.)) for i in range(1000)]
 #print(N_2D(E0-t0+4*t-(8*t)/1000000.))
 
 #print(N_2D(E0-t0-4*t+(1)*(8*t/nb))-N_2D(E0-t0-4*t+0*(8*t/nb)))
-"""
 
 
-"""
+
 nb=100.
 densite_2D_bis=[(N_2D(E0-t0-4*t+(i+2)*(8*t/nb))-N_2D(E0-t0-4*t+(i+1)*(8*t/nb))) for i in range(0,98,1)]
 E_2D_bis=linspace(E0-t0-4*t+(8*t/nb),E0-t0+4*t,98)
 
 plot(E_2D_bis,densite_2D_bis)
-"""
+
 
 

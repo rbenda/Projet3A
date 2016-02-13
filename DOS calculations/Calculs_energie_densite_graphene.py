@@ -4,6 +4,10 @@ Created on Wed Oct 21 13:39:44 2015
 
 @author: Robert
 """
+"""
+Ce programme permet d'afficher la structure de bande du graphène, ainsi que sa projection
+dans le plan (k_x,k_y).
+"""
 
 
 get_ipython().magic(u'pylab inline')
@@ -27,9 +31,9 @@ k_x_1=np.outer(a*k_x,ones(size(k_x)))
 k_y = np.linspace(-pi/a,pi/a,200)
 k_y_1=np.outer(ones(size(k_y)),a*k_y)
 
-var_1=np.outer(cos((3*a/2)*k_x), cos((sqrt(3)*a/2)*k_y))
+#var_1=np.outer(cos((3*a/2)*k_x), cos((sqrt(3)*a/2)*k_y))
 #print(var_1)
-var_2=np.outer(ones(size(k_y)), cos(sqrt(3)*a*k_y))
+#var_2=np.outer(ones(size(k_y)), cos(sqrt(3)*a*k_y))
 #print(var_2)
 
 def energy_graphene_antiliant(u,v):
@@ -39,20 +43,24 @@ def energy_graphene_liant(u,v):
     return E0-t0-t*sqrt(3+2*(2*cos((3*a/2)*u)*cos((sqrt(3)*a/2)*v)+cos(sqrt(3)*a*v)))
 
 #Energie pour un feuillet de graphène : énergie des états liants et antiliants
-energie_graphene_antiliant=(E0-t0+t*sqrt(3+2*(2*var_1+var_2)))
+#energie_graphene_antiliant=(E0-t0+t*sqrt(3+2*(2*var_1+var_2)))
 
 energie_graphene_antiliant_bis=[[energy_graphene_antiliant(-pi/a+i*(2*pi/a)/200,-pi/a+j*(2*pi/a)/200) for i in range (0,200)] for j in range(0,200)]
 
-energie_graphene_liant=(E0-t0-t*sqrt(3+2*(2*var_1+var_2)))
+#energie_graphene_liant=(E0-t0-t*sqrt(3+2*(2*var_1+var_2)))
 
 energie_graphene_liant_bis=[[energy_graphene_liant(-pi/a+i*(2*pi/a)/200,-pi/a+j*(2*pi/a)/200) for i in range (0,200)] for j in range(0,200)]
 
 
-ax.plot_surface(k_x_1, k_y_1, energie_graphene_antiliant_bis,rstride=10, cstride=10, cmap=cm.coolwarm, linewidth=0, antialiased=False)
+ax.plot_surface(k_x_1, k_y_1, energie_graphene_antiliant_bis,rstride=10, cstride=10, cmap=plt.cm.coolwarm, linewidth=0.05, antialiased=True,alpha=1)
 
 #ax.plot_surface(k_x_1, k_y_1, energie_graphene_liant,rstride=10, cstride=10, cmap=cm.coolwarm, linewidth=0, antialiased=False)
-ax.plot_surface(k_x_1, k_y_1, energie_graphene_liant_bis,rstride=10, cstride=10, cmap=cm.coolwarm, linewidth=0, antialiased=False)
 
+ax.plot_surface(k_x_1, k_y_1, energie_graphene_liant_bis,rstride=10, cstride=10, cmap=plt.cm.coolwarm, linewidth=0.05, antialiased=True,alpha=1)
+
+plt.title("Energy band of graphene in tight-binding", fontsize=10)
+xlabel("kx (m^(-1))")
+ylabel("ky (m^(-1))")
 ax.set_zlim(E0-t0-3*t, E0-t0+3*t)
 ax.zaxis.set_major_locator(LinearLocator(10))
 ax.zaxis.set_major_formatter(FormatStrFormatter('%.02f'))
@@ -61,11 +69,12 @@ ax.zaxis.set_major_formatter(FormatStrFormatter('%.02f'))
 
 plt.show()
 
-X1,Y1= meshgrid(k_x,k_y)
+X1,Y1= meshgrid(k_x_1,k_y_1)
 ax.plot_surface(X1,Y1,energie_graphene_liant_bis)
 #ax.plot_surface(X1,Y1,energie_graphene_antiliant_bis)
 show()
+hold()
 
 #Visualisation des points de Dirac vus du dessus
-pcolor(X1,Y1,energie_graphene_liant)# Projection
-show()
+#pcolor(X1,Y1,energie_graphene_liant)# Projection
+#show()

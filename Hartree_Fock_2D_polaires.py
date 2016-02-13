@@ -26,7 +26,7 @@ import matplotlib.pyplot as plt
 
 
 e2=2.3*math.pow(10,-28) 
-N=20
+N=30
 E0=13
 t0=0.5
 t=2
@@ -52,9 +52,9 @@ d=a/4.
 #uniquement et donc un seul spin représenté. La correction calculée sera polarisée en spin.
 
 #Nombre de valeurs de k_x occupées 
-alpha1=3
+alpha1=10
 #Nombre de valeurs de k_y occupées 
-alpha2=3
+alpha2=10
 
 NB=alpha1*alpha2
 #NB maximal : 2*(N^2)
@@ -101,7 +101,7 @@ def F(l1,p1,r1,r2,theta1,theta2,phi1,phi2):
 #le tirage de r1 et r2 selon des gaussiennes    
 #Premier facteur : facteur de renormalisation de la densité de la gaussienne
     
-nb=100.
+nb=1000.
 
 """
 r1_0=0.
@@ -117,7 +117,7 @@ def I_2D(l1,p1):
     Y=[0 for i in range(6)]    
     res=0
 
-    for i in range(99):
+    for i in range(999):
         #Tirage d'un (i+1)ème uplet de variables aléatoires
     
         
@@ -311,11 +311,13 @@ energie_2D_corrigee=[[(E0-t0-2*t*(cos(k_x[i]*a)+cos(k_y[j]*a))+correction_energi
 #energie_corrigee=[[(energie_2D[i][j],correction_energie[i][j]) for i in range(N)] for j in range(N)] 
 #energie_corrigee=[[(energie_2D[i][j]+correction_energie[i][j]) for i in range(N)] for j in range(N)]
 
-ax.plot_surface(k_x_1, k_y_1,correction_energie,rstride=10, cstride=10, cmap=plt.cm.coolwarm, linewidth=0, antialiased=False)
+ax.plot_surface(k_x_1, k_y_1,correction_energie,rstride=1, cstride=1, cmap=plt.cm.coolwarm, linewidth=0.05, antialiased=True,alpha=1)
+#ax.view_init(elev=10,azim=0)
 #La fonction plot_surface trace à partir de 3 matrices A, B et C, l'ensemble des points 
 #de coordonnées (A[i][j], B[i][j], C[i][j]) et les relie pour former une surface.
-
 plt.title("Correction given by the Hartree-Fock term for the 2D lattice,  in eV", fontsize=10)
+xlabel("kx (m^(-1))")
+ylabel("ky (m^(-1))")
 plt.show()
 plt.hold()
 #ax.contour(k_x_1, k_y_1, energie_corrigee,zdir='z')
@@ -328,7 +330,7 @@ ax.zaxis.set_major_formatter(plt.FormatStrFormatter('%.02f'))
 
 X,Y= meshgrid(k_x,k_y)
 pcolor(X,Y,correction_energie)
-show()
+show() 
 
 
 #fig.colorbar(surf, shrink=0.5, aspect=10)
@@ -339,7 +341,9 @@ ax = fig.add_subplot(111, projection='3d') #Créaton d'axes 3D
 
 ax.plot_surface(k_x_1, k_y_1,energie_2D_corrigee,rstride=1, cstride=1, cmap=plt.cm.coolwarm, linewidth=0.05, antialiased=True,alpha=1)
 plt.title("Energy corrected by the Hartree-Fock term for the 2D lattice (eV)", fontsize=10)
-ax.view_init(elev=10,azim=40)
+xlabel("kx (m^(-1))")
+ylabel("ky (m^(-1))")
+#ax.view_init(elev=10,azim=40)
 
 plt.show()
 plt.hold()

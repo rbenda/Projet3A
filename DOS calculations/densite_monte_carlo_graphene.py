@@ -74,3 +74,5 @@ for i in range(500):
 
 
 plot(energie,densite)
+xlabel("Energy E (eV)")
+ylabel("DOS D(E)")

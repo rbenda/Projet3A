@@ -167,15 +167,21 @@ kF=(pi/(2*a))*(NB1/N1)
 E_F=E0-t0-2*t*cos(kF*a)
 
 
-lambda_ecrantage=[0 for i in range(5)]
+lambda_ecrantage=[0 for i in range(20)]
 
 #Valeur initiale : densitée calculée en tight-bonding 1D
-lambda_1=(pi/sqrt(e2))*sqrt(2*t*a*abs(sin(kF*a)))/kF
+#lambda_1=(pi/sqrt(e2))*sqrt(2*t*a*abs(sin(kF*a)))/kF
+
+#Trouver le lambda critique à partir duquel on corrige la discontinuité au niveau de Fermi
+#|En unités de a (car intégrande : exp(-(1/lambda)*(r/a)))
+lambda_1=5.
+#Lambda_critique=5*a
+
 #Pas homogène 
 #Attention : e2 = q2/4*pi*epsilon0 !!
 lambda_courant=lambda_1
 
-for etape in range(5):
+for etape in range(20):
     #Calcul auto-cohérent tenant compte de l'écrantage pour effacer la singularité au niveau de Fermi
 
     #Longueur caractéristique d'écrantage de Thomas-Fermi, déduite de la densité d'états au niveau de Fermi
