@@ -4,6 +4,7 @@ Created on Wed Oct 21 13:39:44 2015
 
 @author: Robert
 """
+
 """
 Ce programme permet d'afficher la structure de bande du graphène, ainsi que sa projection
 dans le plan (k_x,k_y).
@@ -21,6 +22,10 @@ from mpl_toolkits.mplot3d import Axes3D
 import matplotlib.pyplot as plt
 import numpy as np
 
+E0=13
+t0=0.5
+t=2
+a=math.pow(10,-10)
 
 fig = plt.figure()
 ax = fig.add_subplot(111, projection='3d') #Créaton d'axes 3D

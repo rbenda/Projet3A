@@ -104,6 +104,8 @@ for m in range(N):
 #NB : nombre d'électrons au total : fixé pour le calcul d'un profil d'énergie M -> E(M)
 for NB in range(10,15):
     
+    print("Trace de l'energie en fonction de l'aimantation pour un nombre de particules fixé égal à NB={0}".format(NB))
+    
     energie_M=[0 for i in range(0,NB+1,1)]
     #On aura energie_M[k] qui correspond à l'énergie totale pour une aimantation -NB+2*k
     

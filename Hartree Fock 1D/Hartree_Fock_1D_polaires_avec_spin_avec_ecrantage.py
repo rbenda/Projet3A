@@ -50,7 +50,7 @@ def distance_reseau_1D(x,y,z,x1,y1,z1):
 
 
 #Nombre d'ELECTRONS mis dans le système
-NB=102
+NB=304
 #NB=2*N_occ où N_occ est le nombre d'ETATS occupés
 
 
@@ -161,13 +161,13 @@ def terme_facteur_phase(n,sigma_n,m):
 print(terme_facteur_phase(1,-1,1))
 
 N1=200.
-NB1=102.
+NB1=304.
 kF=(pi/(2*a))*(NB1/N1)
 #Energie de Fermi en tight-binding :
 E_F=E0-t0-2*t*cos(kF*a)
 
 
-lambda_ecrantage=[0 for i in range(20)]
+lambda_ecrantage=[0 for i in range(10)]
 
 #Valeur initiale : densitée calculée en tight-bonding 1D
 #lambda_1=(pi/sqrt(e2))*sqrt(2*t*a*abs(sin(kF*a)))/kF
@@ -181,7 +181,7 @@ lambda_1=5.
 #Attention : e2 = q2/4*pi*epsilon0 !!
 lambda_courant=lambda_1
 
-for etape in range(20):
+for etape in range(10):
     #Calcul auto-cohérent tenant compte de l'écrantage pour effacer la singularité au niveau de Fermi
 
     #Longueur caractéristique d'écrantage de Thomas-Fermi, déduite de la densité d'états au niveau de Fermi

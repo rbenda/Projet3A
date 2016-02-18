@@ -52,7 +52,7 @@ d=a/4.
 #uniquement et donc un seul spin représenté. La correction calculée sera polarisée en spin.
 
 #Nombre de valeurs de k_x occupées 
-alpha1=10
+alpha1=5
 #Nombre de valeurs de k_y occupées 
 alpha2=10
 
@@ -316,8 +316,8 @@ ax.plot_surface(k_x_1, k_y_1,correction_energie,rstride=1, cstride=1, cmap=plt.c
 #La fonction plot_surface trace à partir de 3 matrices A, B et C, l'ensemble des points 
 #de coordonnées (A[i][j], B[i][j], C[i][j]) et les relie pour former une surface.
 plt.title("Correction given by the Hartree-Fock term for the 2D lattice,  in eV", fontsize=10)
-xlabel("kx (m^(-1))")
-ylabel("ky (m^(-1))")
+ylabel("kx (m^(-1))")
+xlabel("ky (m^(-1))")
 plt.show()
 plt.hold()
 #ax.contour(k_x_1, k_y_1, energie_corrigee,zdir='z')
@@ -330,6 +330,8 @@ ax.zaxis.set_major_formatter(plt.FormatStrFormatter('%.02f'))
 
 X,Y= meshgrid(k_x,k_y)
 pcolor(X,Y,correction_energie)
+xlabel("kx (m^(-1))")
+ylabel("ky (m^(-1))")
 show() 
 
 
